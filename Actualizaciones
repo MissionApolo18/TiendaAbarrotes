@@ -1,0 +1,11 @@
+
+En este documento estare mencionando las actualizaciones y avances que realice.
+
+Por el momento ya hice los Service y los Repository de todos los Modelos que hizo Atenea 
+
+Tambien actualice el script sql de la bd ya que se me olvido agregar en la tabla "usuarios" el campo "password", ya lo agregue y tambien 
+lo agregue en el modelo del proyecto spring.
+
+Posteriormenete modifique el diagrama que tenemos en el proyecto.
+
+Queda Pendiente los de Spring Security con dos vistas, la vista del cajero y la vista del administrador.
