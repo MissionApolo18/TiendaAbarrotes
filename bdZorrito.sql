@@ -17,6 +17,7 @@ CREATE TABLE usuarios (
   nombre VARCHAR(255) NOT NULL,
   username VARCHAR(255) NOT NULL UNIQUE,
   rol INT NOT NULL,
+  password varchar(255) NOT NULL,
   FOREIGN KEY (rol) REFERENCES rol(id_rol)
 );
 

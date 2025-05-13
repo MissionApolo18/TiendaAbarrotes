@@ -22,7 +22,10 @@ public class Usuarios {
 	
 	@Column(name = "nombre")
 	private String nombreUsuario;
+
+	@Column(name = "password")
+	private String password;
 	
 	@Column(name = "username")
-	private String usernameUsuario                     ;
+	private String username;                     ;
 }

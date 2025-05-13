@@ -23,6 +23,6 @@ public class Cliente {
 	private String correoCliente;
 	
 	@Column(name = "telefono")
-	private int telefonoCliente;
+	private String telefonoCliente;
 	
 }

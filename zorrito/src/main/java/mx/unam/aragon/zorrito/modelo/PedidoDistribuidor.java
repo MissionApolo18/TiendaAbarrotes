@@ -15,7 +15,7 @@ import java.util.Date;
 public class PedidoDistribuidor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_detalle")
+	@Column(name = "id_pedido")
 	private long idPedDistri;
 	
 	@JoinColumn(name = "id_distribuidor",referencedColumnName = "id_distribuidor")

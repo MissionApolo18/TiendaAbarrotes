@@ -18,14 +18,19 @@ public class CorteInventario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_corte")
 	private long idCorte;
-	
+	/*
 	@JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
 	@OneToMany
-	private List<Producto> productos;
+	private List<Producto> productos;*/
+
+	@ManyToOne
+	@JoinColumn(name = "id_producto", referencedColumnName = "id_producto", nullable = false)
+	private Producto producto;
 	
 	@Column(name = "fecha")
 	private Date fecha;
-	
+
+	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo")
 	private Tipo tipo;
 	

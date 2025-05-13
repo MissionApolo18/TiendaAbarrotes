@@ -19,12 +19,12 @@ public class DetalleVenta {
 	private long idDetalleVenta;
 	
 	@JoinColumn(name = "id_venta", referencedColumnName = "id_venta")
-	@OneToMany
-	private List<Venta> ventas;
+	@ManyToOne
+	private Venta ventas;
 	
 	@JoinColumn(name = "id_producto",referencedColumnName = "id_producto")
-	@OneToMany
-	private List<Producto> productos;
+	@ManyToOne
+	private Producto productos;
 	
 	@Column(name = "cantidad")
 	private int cantidad;
