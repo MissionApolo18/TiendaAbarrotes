@@ -10,4 +10,5 @@ public interface UsuariosService {
     List<Usuarios> findAll();
     void deleteById(Long id);
     Usuarios findById(Long id);
+    Usuarios findByUsername(String username);
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
+</head>
+<body>
+
+<!--Barra de navegacion-->
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+
+<!--Div para desplegar la tabla    -->
+<div class="container">
+  <div class="container text-center" style="margin:30px">
+    <h3>Zorro Abarrotero</h3>
+  </div>
+
+  <form method="post" th:action="@{/producto/guardar-producto}" th:object="${producto}">
+    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+      Verifique los siguientes inconvenientes:
+      <ul>
+        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+      </ul>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-6">
+
+        <!-- Nombre del producto -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('nombreProducto')}? 'is-invalid'"
+                  type="text" id = "nombreProducto"
+                  th:field="*{nombreProducto}"
+                  class="form-control"
+                  placeholder="Nombre del producto">
+          <label for="nombreProducto">Nombre del producto</label>
+        </div>
+
+        <!-- Precio del producto -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('precioProducto')}? 'is-invalid'"
+                  type="number" id = "precioProducto"
+                  step="0.01"
+                  th:field="*{precioProducto}"
+                  class="form-control"
+                  placeholder="Precio unitario de venta">
+          <label for="precioProducto">Precio unitario</label>
+        </div>
+
+        <!-- Stock -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('stockProducto')}? 'is-invalid'"
+                  type="number" id = "stockProducto"
+                  th:field="*{stockProducto}"
+                  class="form-control"
+                  placeholder="Cantidad en stock">
+          <label for="stockProducto">Stock</label>
+        </div>
+
+        <!-- URL de la imagen -->
+<!--        <div class="form-floating mb-3">-->
+<!--          <input-->
+<!--                  th:classappend="${#fields.hasErrors('imagenProducto')}? 'is-invalid'"-->
+<!--                  type="text"-->
+<!--                  th:field="*{imagenProducto}"-->
+<!--                  class="form-control"-->
+<!--                  placeholder="URL de la imagen">-->
+<!--          <label for="imagenProducto">Imagen URL</label>-->
+<!--        </div>-->
+
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+
+
+
+  </main>
+
+</div>
+
+<div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
+</head>
+<body>
+
+<!--Barra de navegacion-->
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+
+<!--Formulario de alta de cliente-->
+<div class="container">
+  <div class="container text-center" style="margin:30px">
+    <h3>Zorro Abarrotero</h3>
+  </div>
+
+  <form method="post" th:action="@{/cliente/guardar-cliente}" th:object="${cliente}">
+    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+      Verifique los siguientes inconvenientes:
+      <ul>
+        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+      </ul>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-6">
+
+        <!-- Nombre del cliente -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('nombreCliente')}? 'is-invalid'"
+                  type="text" id="nombreCliente"
+                  th:field="*{nombreCliente}"
+                  class="form-control"
+                  placeholder="Nombre del cliente">
+          <label for="nombreCliente">Nombre del cliente</label>
+        </div>
+
+        <!-- Correo del cliente -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('correoCliente')}? 'is-invalid'"
+                  type="email" id="correoCliente"
+                  th:field="*{correoCliente}"
+                  class="form-control"
+                  placeholder="Correo electrónico">
+          <label for="correoCliente">Correo electrónico</label>
+        </div>
+
+        <!-- Teléfono del cliente -->
+        <div class="form-floating mb-3">
+          <input
+                  th:classappend="${#fields.hasErrors('telefonoCliente')}? 'is-invalid'"
+                  type="text" id="telefonoCliente"
+                  th:field="*{telefonoCliente}"
+                  class="form-control"
+                  placeholder="Teléfono">
+          <label for="telefonoCliente">Teléfono</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+
+</div>
+
+<div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
+
+</body>
+</html>

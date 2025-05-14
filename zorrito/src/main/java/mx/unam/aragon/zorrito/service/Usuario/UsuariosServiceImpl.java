@@ -38,4 +38,9 @@ public class UsuariosServiceImpl implements UsuariosService {
         Optional<Usuarios> op = usuarioRepository.findById(id);
         return op.orElse(null);
     }
+
+    @Override
+    public Usuarios findByUsername(String username) {
+        return usuarioRepository.findByUsername(username); // <- este debe existir en tu repositorio
+    }
 }

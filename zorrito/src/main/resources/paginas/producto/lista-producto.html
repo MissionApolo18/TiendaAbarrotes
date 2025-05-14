@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
+</head>
+<body>
+
+<!--Barra de navegacion-->
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+
+<!--Div para desplegar la tabla    -->
+<div class="container">
+    <div class="container text-center" style="margin:30px">
+        <h3>Zorro Abarrotero</h3>
+    </div>
+
+    <main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <h1 th:text="${contenido}"></h1>
+        <table th:if="${!productos.isEmpty()}" class="table table-striped table-hover table-sm">
+            <thead class="table-dark table-bordered">
+            <tr>
+                <th scope="col"> Nombre</th>
+                <th scope="col"> Precio Unitario</th>
+                <th scope="col"> Cantidad de Producto</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="producto: ${productos}">
+                <td th:text="${producto.nombreProducto}"></td>
+                <td th:text="${producto.precioProducto}"></td>
+                <td th:text="${producto.stockProducto}"></td>
+
+<!--                <td>-->
+<!--                    <a th:href="@{/actor/modificar-actor/{id} (id=${actor.id})}"-->
+<!--                       class="btn btn-success">Modificar <i class="fas fa-pen-nib"-->
+<!--                                                            aria-hidden="true"></i> </a>-->
+<!--                    <a th:href="@{/actor/eliminar-actor/{id} (id=${actor.id})}"-->
+<!--                       class="btn btn-danger">Eliminar <i class="fas fa-trash-alt"-->
+<!--                                                          aria-hidden="true"></i> </a>-->
+<!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+
+    </main>
+
+</div>
+
+<div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
+
+</body>
+</html>
