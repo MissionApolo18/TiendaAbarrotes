@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Recursos estáticos y páginas públicas:
                         .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/index").authenticated()
                         // Cualquier otra petición requiere estar autenticado:
                         .anyRequest().authenticated()
                 )
@@ -54,7 +55,6 @@ public class SecurityConfig {
                         .permitAll()                  // Permite ver el login sin estar autenticado
                 )
 
-                // Configuración de logout (opcionalmente puedes personalizar más)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")

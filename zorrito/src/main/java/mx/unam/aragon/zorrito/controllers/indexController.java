@@ -10,6 +10,10 @@ public class indexController {
     private  static final Logger logger =
             LoggerFactory.getLogger(indexController.class);
 
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/login";  // Redirige a login si el usuario accede a /
+    }
 
     @GetMapping("/index")
     public String index() {
