@@ -1,0 +1,380 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #9b1d11; /* Fondo oscuro pero no excesivo */
+    color: #fbe7d9; /* Texto claro */
+    padding: 20px;
+}
+
+#nav {
+    text-decoration: none;
+    color: #fbe7d9; /* Texto del nav */
+    padding: 10px;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+nav:hover {
+    border-bottom: 2px solid #FFD700; /* Efecto dorado para resaltar */
+}
+
+.navbar {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    justify-items: center;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+    position: absolute;
+    background-color: #fbe7d9; /* Fondo claro */
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: #333333; /* Texto oscuro */
+}
+
+.menu li {
+    padding: 8px 16px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #333333;
+}
+
+.menu li:hover {
+    background-color: #f7cbb1; /* Suave cambio al pasar el cursor */
+}
+
+.menu.show {
+    display: block;
+}
+
+.toggle-button {
+    cursor: pointer;
+    padding: 5px 5px;
+    font-size: 16px;
+    color: #fbe7d9;
+    border: none;
+    border-radius: 9px;
+    background-color: #ec330a; /* Contraste */
+    width: 100px;
+    height: 40px;
+    text-align: center;
+}
+
+.toggle-button:hover {
+    background-color: #9b1d11; /* Oscurece ligeramente */
+}
+
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fbe7d9; /* Fondo claro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+    color: #333333; /* Texto oscuro */
+}
+
+.form-container label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #fbe7d9;
+    border-radius: 5px;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #ec330a; /* Más claro y contrastado */
+    color: #fbe7d9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #9b1d11; /* Oscurece ligeramente */
+}
+
+.forgot-password {
+    margin-top: 15px;
+    color: #FFD700; /* Resalta pero sigue en la paleta */
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+header {
+    text-align: center;
+    color: #FFD700; /* Resalta para header */
+}
+
+h2 {
+    color: #fbe7d9; /* Consistente con el texto principal */
+}
+
+.selection-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.platform-content {
+    background-color: #333333; /* Fondo más oscuro */
+    padding: 20px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fbe7d9;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    background-color: #9b1d11; /* Fondo de tarjetas más contrastado */
+    border-radius: 10px;
+    padding: 15px;
+    width: 30%;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fbe7d9;
+}
+
+.card h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.card input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #ec330a;
+    color: #fbe7d9;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #9b1d11;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #9b1d11; /* Bordes consistentes */
+    background-color: #ec330a;
+    color: #ffc9a9;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select option {
+    background-color: #333333;
+    color: #fbe7d9;
+    padding: 10px;
+}
+
+select:hover {
+    background-color: #7d1c11;
+}
+
+/* Estilo para títulos principales */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #FFD700; /* Resalta el título */
+    margin-bottom: 20px;
+}
+
+/* Estilo general para los formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fbe7d9; /* Fondo claro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+form label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333; /* Texto oscuro */
+    margin-bottom: 5px;
+    align-self: flex-start; /* Alinea las etiquetas a la izquierda */
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #fbe7d9;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fbe7d9;
+    background-color: #ec330a; /* Botón con contraste */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #7d1c11; /* Efecto hover */
+}
+
+/* Estilo para los enlaces */
+p a {
+    color: #FFD700; /* Enlaces resaltados */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para mensajes de error */
+p.error {
+    color: #FF4D4D; /* Rojo claro para mensajes de error */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Estilo para el footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #fbe7d9; /* Texto claro */
+    font-size: 14px;
+}
+
+/* Navbar */
+nav.navbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#userDropdown {
+    background-color: #ec330a;
+    color: #fbe7d9;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#userDropdown:hover {
+    background-color: #7d1c11;
+}
+
+/* Menú desplegable */
+.menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 0; /* Asegura que permanezca anclado */
+    background-color: #FFFFFF;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    min-width: 150px;
+}
+
+.menu li {
+    padding: 10px 20px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.menu li:hover {
+    background-color: #fbe7d9;
+}
+
+.menu.show {
+    display: flex;
+}
+
+/* Estilo general para el header */
+header a {
+    text-decoration: none;
+    color: #c4220a;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
