@@ -1,13 +1,14 @@
--- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.11.11-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: abarrote_zorro
 -- ------------------------------------------------------
--- Server version	5.5.5-10.11.8-MariaDB-0ubuntu0.24.04.1
+-- Server version	10.11.11-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -19,13 +20,9 @@
 -- Table structure for table `cliente`
 --
 
-create database abarrote_zorro;
-
-use abarrote_zorro;
-
 DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
@@ -34,7 +31,7 @@ CREATE TABLE `cliente` (
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `correo` (`correo`),
   UNIQUE KEY `telefono` (`telefono`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +40,11 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Jorge Luis','jorge12@gmail.com','5523247886'),(2,'Atenea Marta','MartaChulada@gmail.com','5598456734'),(3,'Ana Cecilia','ana123@gmail.com','5514230987'),(5,'Bergolio','papadeath@gmail.com','5567452312');
+INSERT INTO `cliente` VALUES
+(1,'Jorge Luis','jorge12@gmail.com','5523247886'),
+(2,'Atenea Marta','MartaChulada@gmail.com','5598456734'),
+(3,'Ana Cecilia','ana123@gmail.com','5514230987'),
+(5,'Bergolio','papadeath@yahoo.com','5567452312');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +54,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `corte_inventario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `corte_inventario` (
   `id_corte` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` date NOT NULL,
@@ -81,7 +82,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `detalle_pedido_distribuidor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalle_pedido_distribuidor` (
   `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
   `id_pedido` int(11) NOT NULL,
@@ -111,7 +112,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `detalle_venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalle_venta` (
   `id_detalle` int(11) NOT NULL AUTO_INCREMENT,
   `id_venta` int(11) NOT NULL,
@@ -141,13 +142,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `distribuidor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `distribuidor` (
   `id_distribuidor` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
   `correo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_distribuidor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,13 +156,12 @@ CREATE TABLE `distribuidor` (
 --
 
 LOCK TABLES `distribuidor` WRITE;
-INSERT INTO distribuidor (id_distribuidor, nombre, correo) VALUES
-(1, 'Distribuciones El Águila', 'contacto@elaguila.com'),
-(2, 'Súper Alimentos MX', 'ventas@superalimentos.mx'),
-(3, 'Refrescos del Norte', 'norte@refrescos.com'),
-(4, 'Botanas y Más', 'contacto@botanasy.com');
-
 /*!40000 ALTER TABLE `distribuidor` DISABLE KEYS */;
+INSERT INTO `distribuidor` VALUES
+(1,'Distribuciones El Águila','contacto@elaguila.com'),
+(2,'Súper Alimentos MX','ventas@superalimentos.mx'),
+(3,'Refrescos del Norte','norte@gmail.com'),
+(6,'FoodRapi','rapi03@yahoo.com');
 /*!40000 ALTER TABLE `distribuidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +171,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `metodo_pago`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metodo_pago` (
   `id_metodo` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
@@ -194,7 +194,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `pago`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pago` (
   `id_pago` int(11) NOT NULL AUTO_INCREMENT,
   `id_venta` int(11) NOT NULL,
@@ -223,7 +223,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `pedido_distribuidor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pedido_distribuidor` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `id_distribuidor` int(11) NOT NULL,
@@ -249,7 +249,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `producto` (
   `id_producto` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
@@ -260,7 +260,7 @@ CREATE TABLE `producto` (
   PRIMARY KEY (`id_producto`),
   KEY `id_distribuidor` (`id_distribuidor`),
   CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_distribuidor`) REFERENCES `distribuidor` (`id_distribuidor`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,12 +269,11 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO producto (id_producto, nombre, precio_unitario_venta, stock, id_distribuidor, imagen_url) VALUES
-(1, 'Fanta 600ml', 15.00, 50, 3, 'imagenes/fanta.jpg'),
-(2, 'Coca Cola 1L', 30.00, 100, 3, 'imagenes/coca.jpg'),
-(3, 'Sabritas Limón', 13.50, 20, 4, 'imagenes/sabritas.jpg'),
-(4, 'Monster Energy', 28.00, 100, 3, 'imagenes/monster.jpg');
-
+INSERT INTO `producto` VALUES
+(2,'Coca Cola 1L',30.00,100,3,'imagenes/coca.jpg'),
+(10,'Helado Vainilla',56.00,100,2,NULL),
+(11,'Pepsi Dieta 600ml',20.00,500,3,NULL),
+(12,'Pizza Congelada',40.00,300,6,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,7 +283,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `rol`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rol` (
   `id_rol` int(11) NOT NULL AUTO_INCREMENT,
   `rol` varchar(255) NOT NULL,
@@ -298,7 +297,9 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'admin'),(2,'cajero');
+INSERT INTO `rol` VALUES
+(1,'admin'),
+(2,'cajero');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +309,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tarjeta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tarjeta` (
   `id_tarjeta` int(11) NOT NULL AUTO_INCREMENT,
   `id_pago` int(11) NOT NULL,
@@ -337,7 +338,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
@@ -348,7 +349,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `username` (`username`),
   KEY `rol` (`rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +358,9 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Juan Robles','admin1',1,'$2a$10$qAFw1zrtmvML6v5S420L4uU1cL/dFc8Msk4OT1kMI1qbzVOi/C6Sm');
+INSERT INTO `usuarios` VALUES
+(1,'Juan Robles','admin1',1,'$2a$10$cccmoCk8Ebu/R6FARn74C.fdZ5LzztIsKklO6XrOrb5ZNL7D6XJj2'),
+(2,'Jorge Luis','cajero1',2,'$2a$10$SLn3WLqtwQCr7Nxi1oxmMuyFr7wnVaqU2FqPcjfH0tu4STUME666O');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,7 +370,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `venta` (
   `id_venta` int(11) NOT NULL AUTO_INCREMENT,
   `id_cliente` int(11) NOT NULL,
@@ -400,4 +403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-13 21:38:34
+-- Dump completed on 2025-05-25 22:05:31

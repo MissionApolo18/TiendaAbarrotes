@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
-    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
 
 <!--Barra de navegacion-->
-<div class="nav" th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
 
-<!--Div para desplegar la tabla    -->
+<!--Formulario de alta de cliente-->
 <div class="container">
     <div class="container text-center" style="margin:30px">
         <h3>Zorro Abarrotero</h3>
-        <img th:src="@{/img/zorro.jpg}" alt="Zorro Abarrotero" class="img-fluid zorro-img">
     </div>
+
+    <form method="post" th:action="@{/distribuidor/guardar-distribuidor}" th:object="${distribuidor}">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            Verifique los siguientes inconvenientes:
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <input type="hidden" th:field="*{id_distribuidor}" />
+
+
+        <div class="row justify-content-center">
+            <div class="col-6">
+
+                <!-- Nombre del cliente -->
+                <div class="form-floating mb-3">
+                    <input
+                            th:classappend="${#fields.hasErrors('nombreDistribuidor')}? 'is-invalid'"
+                            type="text" id="nombreDistribuidor"
+                            th:field="*{nombreDistribuidor}"
+                            class="form-control"
+                            placeholder="Nombre del distribuidor">
+                    <label for="nombreDistribuidor">Nombre del distribuidor</label>
+                </div>
+
+                <!-- Correo del cliente -->
+                <div class="form-floating mb-3">
+                    <input
+                            th:classappend="${#fields.hasErrors('correoDistribuidor')}? 'is-invalid'"
+                            type="email" id="correoDistribuidor"
+                            th:field="*{correoDistribuidor}"
+                            class="form-control"
+                            placeholder="Correo electrónico">
+                    <label for="correoDistribuidor">Correo electrónico</label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+
 </div>
 
 <div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
@@ -28,14 +70,6 @@
         color: #9b1d11;
         background-color: #fbe7d9;
         padding: 20px;
-    }
-
-    .zorro-img {
-        max-width: 300px;
-        height: auto;
-        margin-top: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
     /* Navbar */
@@ -73,7 +107,7 @@
     }
 
     /* Buttons */
-    .btn-custom {
+    .btn {
         background-color: #ec330a;
         color: #fbe7d9;
         border: none;
@@ -81,7 +115,7 @@
         transition: background-color 0.3s ease;
     }
 
-    .btn-custom:hover {
+    .btn:hover {
         background-color: #9b1d11;
     }
 

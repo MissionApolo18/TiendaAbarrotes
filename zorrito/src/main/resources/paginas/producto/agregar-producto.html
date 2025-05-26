@@ -21,6 +21,8 @@
       </ul>
     </div>
 
+    <input type="hidden" th:field="*{id_producto}" />
+
     <div class="row justify-content-center">
       <div class="col-6">
 
@@ -57,6 +59,23 @@
                   placeholder="Cantidad en stock">
           <label for="stockProducto">Stock</label>
         </div>
+
+        <div class="form-floating mb-3">
+          <select
+                  th:field="*{distribuidor}"
+                  class="form-select"
+                  id="distribuidor"
+                  th:classappend="${#fields.hasErrors('distribuidor')} ? 'is-invalid'">
+            <option th:value="${producto.distribuidor}"
+                    th:selected="${distribuidor == null}">Seleccione un distribuidor</option>
+            <option th:each="d : ${distribuidores}"
+                    th:value="${d.id_distribuidor}"
+                    th:text="${d.nombreDistribuidor}">
+            </option>
+          </select>
+          <label for="distribuidor">Distribuidor</label>
+        </div>
+
 
         <!-- URL de la imagen -->
 <!--        <div class="form-floating mb-3">-->

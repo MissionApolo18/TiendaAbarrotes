@@ -10,11 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,5 +52,22 @@ public class ClienteController {
         model.addAttribute("clientes", clientes);
         model.addAttribute("contenido", "Lista de clientes");
         return "/cliente/lista-cliente";
+    }
+
+    // para modificar metodo get
+    @GetMapping("/modificar-cliente/{id}")
+    public String editarCliente(@PathVariable(value = "id") Long id,
+                                 ModelMap model){
+        Cliente cliente = clienteService.findById(id);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("contenido", "Modificar Cliente");
+        return "/cliente/agregar-cliente";
+    }
+
+    // para eliminar producto
+    @GetMapping("/eliminar-cliente/{id}")
+    public String eliminarCliente(@PathVariable("id") Long id) {
+        clienteService.deleteById(id);
+        return "redirect:/cliente/listar_cliente"; // importante usar redirect
     }
 }

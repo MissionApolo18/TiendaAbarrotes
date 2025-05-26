@@ -24,7 +24,13 @@ public class Producto {
     
     @Column(name = "stock")
     private int stockProducto;
+
+    @ManyToOne
+    @JoinColumn(name = "id_distribuidor", referencedColumnName = "id_distribuidor")
+    private Distribuidor distribuidor;
     
     @Column(name = "imagen_url")
     private String imagenProducto;
+
+
 }

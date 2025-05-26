@@ -21,6 +21,7 @@
                 <th class="column" scope="col">Nombre</th>
                 <th class="column" scope="col">Correo</th>
                 <th class="column" scope="col">Teléfono</th>
+                <th class="column" scope="col">Opciones</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,13 @@
                 <td class="filaa" th:text="${cliente.nombreCliente}"></td>
                 <td class="filaa" th:text="${cliente.correoCliente}"></td>
                 <td class="filaa" th:text="${cliente.telefonoCliente}"></td>
+                <!--Opciones-->
+                <td>
+                    <a th:href="@{/cliente/modificar-cliente/{id} (id=${cliente.idCliente})}"
+                       class="btn btn-success me-2">Modificar <i class="fas fa-pen-nib" aria-hidden="true"></i></a>
+                    <a th:href="@{/cliente/eliminar-cliente/{id} (id=${cliente.idCliente})}"
+                       class="btn btn-danger">Eliminar <i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -169,5 +177,17 @@
     .filaa:hover, .column:hover {
         background-color: #9b1d11;
         color: #fbe7d9;
+    }
+
+    /*Bottons Table*/
+    .btn-success {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+        color: #fbe7d9 !important;
+    }
+
+    .btn-success:hover {
+        background-color: #218838 !important;
+        border-color: #1e7e34 !important;
     }
 </style>

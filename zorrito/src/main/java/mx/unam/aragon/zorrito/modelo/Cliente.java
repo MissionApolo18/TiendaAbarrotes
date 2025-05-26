@@ -2,6 +2,7 @@ package mx.unam.aragon.zorrito.modelo;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mx.unam.aragon.zorrito.validators.correo.CorreoValido;
 
 @Entity(name = "cliente")
 @Data
@@ -20,6 +21,7 @@ public class Cliente {
 	private String nombreCliente;
 	
 	@Column(name = "correo")
+	@CorreoValido //aplicando validador
 	private String correoCliente;
 	
 	@Column(name = "telefono")

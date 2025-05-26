@@ -9,3 +9,13 @@ lo agregue en el modelo del proyecto spring.
 Posteriormenete modifique el diagrama que tenemos en el proyecto.
 
 Queda Pendiente los de Spring Security con dos vistas, la vista del cajero y la vista del administrador.
+
+--- 25 de may del 2025 10:02 am 
+Se hizo modificaciones en la estructura de la BD, haciendo que exista una relacion entre la entidad "producto" y "distribuidor", asi como la insercion de registros en la bd para la tabla "distribuidor" y la modificacion de los registros actuales de la bd en "producto".
+
+---25 de may del 2025 10:01 pm
+se realizaron varias actualizaciones dentro del sistema, ahora ya podemos crear clientes, distribuidores, asi como usuarios, tambien informo que se modifico el usuario admin1, dejando que su password dejo de ser 123 a admin123, debido a las validaciones que se desarrollaron.
+
+Se implemento el validador de correos tanto en clientes como distribuidores, solo aceptando correos @gmail.com, @yahoo.com y @outlook.com, finalmente tambien en la contrasenia, donde se solicita una contrasenia de 8 digitos minimo donde minimo 2 caracteres sea de tipo numero
+
+usuarios: admin1  password: admin123,      cajero1  password:cajero58
