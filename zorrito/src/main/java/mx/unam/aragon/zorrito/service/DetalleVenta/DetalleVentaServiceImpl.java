@@ -2,6 +2,7 @@ package mx.unam.aragon.zorrito.service.DetalleVenta;
 
 import mx.unam.aragon.zorrito.modelo.DetallePedidoDistribuidor;
 import mx.unam.aragon.zorrito.modelo.DetalleVenta;
+import mx.unam.aragon.zorrito.modelo.Venta;
 import mx.unam.aragon.zorrito.repository.DetalleVentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,10 @@ public class DetalleVentaServiceImpl implements DetalleVentaService {
     public DetalleVenta findById(Long id) {
         Optional<DetalleVenta> op = detalleVentaRepository.findById(id);
         return op.orElse(null);
+    }
+
+    @Override
+    public List<DetalleVenta> findByVentas(Venta venta) {
+        return detalleVentaRepository.findByVentas(venta);
     }
 }

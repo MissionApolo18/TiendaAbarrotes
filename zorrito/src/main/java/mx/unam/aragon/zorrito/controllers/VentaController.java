@@ -1,5 +1,6 @@
 package mx.unam.aragon.zorrito.controllers;
 
+import mx.unam.aragon.zorrito.dto.HistorialVentaDto;
 import mx.unam.aragon.zorrito.dto.VentaDto;
 import mx.unam.aragon.zorrito.modelo.*;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -79,6 +81,18 @@ public class VentaController {
         // ✅ Validar que items no sea null ni vacío antes de recorrerlo
         if (ventaDto.getItems() != null && !ventaDto.getItems().isEmpty()) {
             ventaDto.getItems().forEach(item -> {
+                Producto producto = productoService.findById(item.getIdProducto());
+
+                //disminuyendo el stock
+                int nuevoStock = producto.getStockProducto() - item.getCantidad();
+                if(nuevoStock < 0){
+                    throw new RuntimeException("No hay suficiente stock para el producto: "
+                            + producto.getNombreProducto());
+                }
+
+                producto.setStockProducto(nuevoStock);
+                productoService.save(producto);//actualizamos el stock
+
                 DetalleVenta detalle = new DetalleVenta();
                 detalle.setVentas(ventaGuardada);
                 detalle.setProductos(productoService.findById(item.getIdProducto()));
@@ -101,6 +115,38 @@ public class VentaController {
         // Mensaje para mostrar en la vista
         redirectAttributes.addFlashAttribute("mensaje", "✅ Venta registrada exitosamente.");
         return "redirect:/venta/agregar_venta";
+    }
+
+    @GetMapping("/listar_venta")
+    public String histrialVentas(Model model){
+        List<Venta> ventas = ventaService.findAll();
+        List<HistorialVentaDto> historial = new ArrayList<>();
+
+        for(Venta venta: ventas){
+            HistorialVentaDto dto = new HistorialVentaDto();
+            dto.setNombreCajero(venta.getIdUsuarioVenta().getNombreUsuario());
+            dto.setNombreCliente(venta.getIdClienteVenta().getNombreCliente());
+            dto.setFechaVenta(venta.getFecha());
+
+
+            // Armar productos y cantidades
+            List<DetalleVenta> detalles = detalleVentaService.findByVentas(venta);
+            List<String> items = new ArrayList<>();
+            for(DetalleVenta det: detalles){
+                items.add(det.getProductos().getNombreProducto() + " (" + det.getCantidad() + ")");
+            }
+            dto.setProductosYcantidades(items);
+
+            // Buscar pago para total
+            Pago pago = pagoService.findByIdVenta(venta.getIdVenta());
+            dto.setTotalPagado(pago.getTotalPagado());
+
+            historial.add(dto); // guardamos el dto en el objto historial
+        }
+        model.addAttribute("historial", historial);
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("contenido", "Historial de Ventas");
+        return "/venta/lista-venta";
     }
 
 

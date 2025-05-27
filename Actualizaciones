@@ -13,9 +13,16 @@ Queda Pendiente los de Spring Security con dos vistas, la vista del cajero y la 
 --- 25 de may del 2025 10:02 am 
 Se hizo modificaciones en la estructura de la BD, haciendo que exista una relacion entre la entidad "producto" y "distribuidor", asi como la insercion de registros en la bd para la tabla "distribuidor" y la modificacion de los registros actuales de la bd en "producto".
 
----25 de may del 2025 10:01 pm
+---25 de may del 2025 20:01
 se realizaron varias actualizaciones dentro del sistema, ahora ya podemos crear clientes, distribuidores, asi como usuarios, tambien informo que se modifico el usuario admin1, dejando que su password dejo de ser 123 a admin123, debido a las validaciones que se desarrollaron.
 
 Se implemento el validador de correos tanto en clientes como distribuidores, solo aceptando correos @gmail.com, @yahoo.com y @outlook.com, finalmente tambien en la contrasenia, donde se solicita una contrasenia de 8 digitos minimo donde minimo 2 caracteres sea de tipo numero
 
-usuarios: admin1  password: admin123,      cajero1  password:cajero58
+usuarios y contrasenias: admin1:admin123,  cajero1:cajero58  admin2:admin456     cajero2: cajero23
+
+--27 de may del 2025 13:56
+Hay avances considerables, podemos realizar ventas en el sistema, dependiendo el rol del usuario podra ver lo de ventas, en caso de ser admin solo vera el historial de ventas y en caso de ser cajero solo puede realizar ventas, el sistema de ventas estamos haciendo uso del lenguaje JS para el carrito, asi como creamos una clas dto que nos ayuda a trabajar las entidades de pago, metodo_pago, venta y detalle_venta.
+
+El objetivo trazado del dia de hoy es generar los reportes excel de historial de ventas y generar los pdfs de cada venta.
+
+La actualizacion se encuentra en la rama Arturo 

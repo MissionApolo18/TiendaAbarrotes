@@ -16,10 +16,10 @@ public class Pago {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_pago")
-	private long idPago;
+	private Long idPago;
 	
 	@Column(name = "id_venta")
-	private long idVenta;
+	private Long idVenta;
 	
 	@JoinColumn(name = "id_metodo", referencedColumnName = "id_metodo")
 	@OneToOne(fetch = FetchType.EAGER)

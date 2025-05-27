@@ -47,7 +47,7 @@ public class DistribuidorController {
     public String listarDistribuidor(Model model) {
         List<Distribuidor> distribuidores = distribuidorService.findAll();
         model.addAttribute("distribuidores", distribuidores);
-        model.addAttribute("contenido", "Lista de Distribuidores");
+        model.addAttribute("contenido", "Lista de Proovedores");
         return "/distribuidor/lista-distribuidor";
     }
 
@@ -57,7 +57,7 @@ public class DistribuidorController {
                                  ModelMap model){
         Distribuidor distribuidor = distribuidorService.findById(id);
         model.addAttribute("distribuidor", distribuidor);
-        model.addAttribute("contenido", "Modificar Distribuidor");
+        model.addAttribute("contenido", "Modificar Proovedor");
         return "/distribuidor/agregar-distribuidor";
     }
 

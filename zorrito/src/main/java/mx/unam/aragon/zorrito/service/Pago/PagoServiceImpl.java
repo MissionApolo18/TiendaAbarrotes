@@ -39,4 +39,9 @@ public class PagoServiceImpl  implements PagoService {
         Optional<Pago> op = pagoRepository.findById(id);
         return op.orElse(null);
     }
+
+    @Override
+    public Pago findByIdVenta(Long idVenta) {
+        return pagoRepository.findByIdVenta(idVenta);
+    }
 }

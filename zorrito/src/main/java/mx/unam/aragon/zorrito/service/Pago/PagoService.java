@@ -10,4 +10,5 @@ public interface PagoService {
     List<Pago> findAll();
     void deleteById(Long id);
     Pago findById(Long id);
+    Pago findByIdVenta(Long Venta);
 }

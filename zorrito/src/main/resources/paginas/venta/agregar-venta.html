@@ -187,6 +187,10 @@
       descuento = 0.20;
     } else if (cantidad >= 100) {
       descuento = 0.15;
+    } else if (cantidad >= 5){
+      descuento = 0.08
+    }else if (cantidad >= 10){
+      descuento = 0.12
     }
 
     const precioFinal = precioUnitario * (1 - descuento);
