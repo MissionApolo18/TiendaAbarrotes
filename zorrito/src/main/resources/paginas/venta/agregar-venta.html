@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
+</head>
+<body>
+
+<!--Barra de navegacion-->
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+
+<!--Div para desplegar la tabla    -->
+<div class="container">
+  <div class="container text-center" style="margin:30px">
+    <h3>Zorro Abarrotero</h3>
+  </div>
+
+  <form th:action="@{/venta/guardar}" th:object="${ventaDto}" method="post">
+
+    <div th:if="${mensaje}" class="alert alert-success mt-3" role="alert">
+      <p th:text="${mensaje}"></p>
+    </div>
+
+    <!-- Cliente -->
+    <label for="cliente">Cliente</label>
+    <select id="cliente" th:field="*{idCliente}" class="form-select" required>
+      <option value="">--Seleccione Cliente--</option>
+      <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}" th:text="${cliente.nombreCliente}"></option>
+    </select>
+
+    <!-- Productos -->
+    <label for="producto">Producto</label>
+    <select id="producto" class="form-select">
+      <option value="">--Seleccione Producto--</option>
+      <option th:each="producto : ${productos}"
+              th:value="${producto.id_producto}"
+              th:data-precio="${producto.precioProducto}"
+              th:data-stock="${producto.stockProducto}"
+              th:text="${producto.nombreProducto}">
+      </option>
+    </select>
+
+    <label for="cantidad">Cantidad</label>
+    <input type="number" id="cantidad" min="1" value="1" class="form-control"/>
+
+    <button type="button" id="agregarProducto" class="btn btn-primary mt-2">Agregar al carrito</button>
+
+    <!-- Tabla carrito -->
+    <table class="table mt-3" id="tablaCarrito">
+      <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Aquí se irán agregando filas con JS -->
+      </tbody>
+    </table>
+
+    <!-- Total -->
+    <div>
+      <strong>Total: $</strong><span id="totalVenta">0.00</span>
+    </div>
+
+    <!-- Método de pago -->
+    <label for="metodoPago">Método de pago</label>
+    <select id="metodoPago" th:field="*{idMetodoPago}" class="form-select" required>
+      <option value="">--Seleccione método--</option>
+      <option th:each="mp : ${metodosPago}" th:value="${mp.idMetodo}" th:text="${mp.descripcion}"></option>
+    </select>
+
+    <!-- Campos ocultos para enviar el total y el carrito -->
+    <input type="hidden" name="total" id="totalInput" />
+    <div id="carritoInputs"></div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-success mt-3">Registrar Venta</button>
+
+  </form>
+
+
+
+
+  </main>
+
+</div>
+
+<div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
+<script>
+  const productoSelect = document.getElementById("producto");
+  const cantidadInput = document.getElementById("cantidad");
+  const agregarBtn = document.getElementById("agregarProducto");
+  const tablaCarrito = document.getElementById("tablaCarrito").getElementsByTagName('tbody')[0];
+  const totalVenta = document.getElementById("totalVenta");
+  const carritoInputs = document.getElementById("carritoInputs");
+
+  let carrito = [];
+
+  agregarBtn.addEventListener("click", () => {
+    const selectedOption = productoSelect.options[productoSelect.selectedIndex];
+    const idProducto = selectedOption.value;
+    const nombre = selectedOption.text;
+    const precio = parseFloat(selectedOption.getAttribute("data-precio"));
+    const stock = parseInt(selectedOption.getAttribute("data-stock"));
+    const cantidad = parseInt(cantidadInput.value);
+
+    if (!idProducto || cantidad < 1) {
+      alert("Seleccione un producto y una cantidad válida");
+      return;
+    }
+
+    // Buscar si el producto ya está en el carrito
+    const itemExistente = carrito.find(p => p.idProducto === idProducto);
+    const cantidadActual = itemExistente ? itemExistente.cantidad : 0;
+
+    if (cantidad + cantidadActual > stock) {
+      alert(`Solo hay ${stock} unidades disponibles de "${nombre}". Ya has agregado ${cantidadActual}.`);
+      return;
+    }
+
+    if (itemExistente) {
+      // Actualiza la cantidad y subtotal en el array
+      itemExistente.cantidad += cantidad;
+      itemExistente.subtotal = calcularSubtotal(itemExistente.cantidad, precio);
+
+      // Actualiza la fila correspondiente
+      const fila = document.getElementById("fila-" + idProducto);
+      fila.querySelector(".cantidad").textContent = itemExistente.cantidad;
+      fila.querySelector(".subtotal").textContent = itemExistente.subtotal.toFixed(2);
+    } else {
+      // Agrega nuevo producto
+      const subtotal = calcularSubtotal(cantidad, precio);
+      carrito.push({ idProducto, nombre, precio, cantidad, subtotal });
+
+      // Crea nueva fila en la tabla
+      const fila = tablaCarrito.insertRow();
+      fila.id = "fila-" + idProducto;
+      fila.innerHTML = `
+        <td>${nombre}</td>
+        <td class="cantidad">${cantidad}</td>
+        <td>$${precio.toFixed(2)}</td>
+        <td class="subtotal">$${subtotal.toFixed(2)}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarProducto('${idProducto}')">Eliminar</button></td>
+      `;
+    }
+
+    actualizarCarrito();
+  });
+
+  function actualizarCarrito() {
+    const total = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+    totalVenta.textContent = total.toFixed(2);
+    document.getElementById("totalInput").value = total.toFixed(2);
+
+    carritoInputs.innerHTML = "";
+
+    carrito.forEach((item, index) => {
+      carritoInputs.innerHTML += `
+        <input type="hidden" th:field="*{items[${index}].idProducto}" name="items[${index}].idProducto" value="${item.idProducto}" />
+        <input type="hidden" th:field="*{items[${index}].cantidad}" name="items[${index}].cantidad" value="${item.cantidad}" />
+        <input type="hidden" th:field="*{items[${index}].precioUnitario}" name="items[${index}].precioUnitario" value="${item.precio}" />
+      `;
+    });
+  }
+
+
+  function eliminarProducto(idProducto) {
+    // Eliminar del array
+    carrito = carrito.filter(item => item.idProducto !== idProducto);
+    // Eliminar la fila
+    const fila = document.getElementById("fila-" + idProducto);
+    fila.remove();
+    // Actualizar
+    actualizarCarrito();
+  }
+
+  function calcularSubtotal(cantidad, precioUnitario) {
+    let descuento = 0;
+
+    if (cantidad >= 1000) {
+      descuento = 0.30;
+    } else if (cantidad >= 500) {
+      descuento = 0.25;
+    } else if (cantidad >= 200) {
+      descuento = 0.20;
+    } else if (cantidad >= 100) {
+      descuento = 0.15;
+    }
+
+    const precioFinal = precioUnitario * (1 - descuento);
+    return cantidad * precioFinal;
+  }
+
+</script>
+
+</body>
+</html>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: #9b1d11;
+    background-color: #fbe7d9;
+    padding: 20px;
+  }
+
+  /* Navbar */
+  .navbar {
+    background-color: #BD280CFF !important;
+    border-radius: 10px;
+  }
+
+  .navbar-brand,
+  .nav-link {
+    color: #fbe7d9 !important;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link.active {
+    border-bottom: 2px solid #FFD700;
+  }
+
+  .nav-link:hover {
+    color: #FFD700 !important;
+  }
+
+  .dropdown-menu {
+    background-color: #fbe7d9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-item {
+    color: #333333 !important;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f7cbb1;
+  }
+
+  /* Buttons */
+  .btn {
+    background-color: #ec330a;
+    color: #fbe7d9;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #9b1d11;
+  }
+
+  /* Forms */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fbe7d9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    color: #333333;
+  }
+
+  .form-container label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #fbe7d9;
+    border-radius: 5px;
+  }
+
+  /* Cards */
+  .card {
+    background-color: #9b1d11;
+    color: #fbe7d9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    color: #FFD700;
+  }
+
+  .card img {
+    border-radius: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #fbe7d9;
+    font-size: 14px;
+  }
+
+  /* Header */
+  header a {
+    text-decoration: none;
+    color: #c4220a;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  header a:hover {
+    text-decoration: underline;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    border: 1px solid #c3e6cb;
+  }
+
+</style>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" href="estilo.css">
 
 <div th:fragment="navegacion-seccion" th:remove="tag">
@@ -31,7 +31,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="productosDropdown">
                                 <li><a class="dropdown-item" th:href="@{/producto/listar_productos}">Listar productos</a></li>
-                                <li><a class="dropdown-item" th:href="@{/producto/agregar_producto}">Agregar producto</a></li>
+                                <li><a class="dropdown-item" th:href="@{/producto/agregar_producto}" sec:authorize="hasRole('ADMIN')">Agregar producto</a></li>
                             </ul>
                         </li>
 
@@ -40,11 +40,12 @@
                                 Ventas
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="clientesDropdown">
-                                <li><a class="dropdown-item" th:href="@{/venta/listar_venta}">Historial Ventas</a></li>
+                                <li><a class="dropdown-item" th:href="@{/venta/listar_venta}" sec:authorize="hasRole('ADMIN')">Historial Ventas</a></li>
+                                <li><a class="dropdown-item" th:href="@{/venta/agregar_venta}" sec:authorize="hasRole('CAJERO')">Realizar Ventas</a></li>
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Clientes
                             </a>
@@ -54,17 +55,17 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="distribuidorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Distribuidores
+                                Proovedores
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="clientesDropdown">
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Distribuidores</a></li>
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Distribuidores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Proovedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Proovedores</a></li>
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Usuarios
                             </a>

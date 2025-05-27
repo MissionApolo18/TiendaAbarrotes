@@ -124,7 +124,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,6 +133,12 @@ CREATE TABLE `detalle_venta` (
 
 LOCK TABLES `detalle_venta` WRITE;
 /*!40000 ALTER TABLE `detalle_venta` DISABLE KEYS */;
+INSERT INTO `detalle_venta` VALUES
+(1,1,10,50,56.00),
+(2,2,10,100,56.00),
+(3,4,11,10,20.00),
+(4,5,11,20,20.00),
+(5,6,10,10,56.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +182,7 @@ CREATE TABLE `metodo_pago` (
   `id_metodo` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id_metodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,6 +191,10 @@ CREATE TABLE `metodo_pago` (
 
 LOCK TABLES `metodo_pago` WRITE;
 /*!40000 ALTER TABLE `metodo_pago` DISABLE KEYS */;
+INSERT INTO `metodo_pago` VALUES
+(1,'Efectivo'),
+(2,'Debito'),
+(3,'Credito');
 /*!40000 ALTER TABLE `metodo_pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +215,7 @@ CREATE TABLE `pago` (
   KEY `id_metodo` (`id_metodo`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,6 +224,10 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
+INSERT INTO `pago` VALUES
+(1,4,1,200.00),
+(2,5,1,400.00),
+(3,6,1,560.00);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -382,7 +396,7 @@ CREATE TABLE `venta` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,6 +405,13 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
+INSERT INTO `venta` VALUES
+(1,5,2,'2025-05-26 14:49:33',0.00),
+(2,2,2,'2025-05-26 20:10:14',0.00),
+(3,5,2,'2025-05-26 20:24:06',0.00),
+(4,3,2,'2025-05-26 20:32:31',0.00),
+(5,5,2,'2025-05-26 20:37:49',0.00),
+(6,1,2,'2025-05-26 20:40:25',0.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -403,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-25 22:05:31
+-- Dump completed on 2025-05-26 23:12:42

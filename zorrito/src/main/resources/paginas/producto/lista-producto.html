@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
 </head>
 <body>
@@ -21,8 +21,8 @@
                 <th class="column" scope="col"> Nombre</th>
                 <th class="column" scope="col"> Precio Unitario</th>
                 <th class="column" scope="col"> Cantidad de Producto</th>
-                <th class="column" scope="col"> Distribuidor</th>
-                <th class="column" scope="col"> Opciones</th>
+                <th class="column" scope="col" sec:authorize="hasRole('ADMIN')"> Distribuidor</th>
+                <th class="column" scope="col" sec:authorize="hasRole('ADMIN')"> Opciones</th>
             </tr>
             </thead>
             <tbody>
@@ -30,9 +30,9 @@
                 <td class="filaa" th:text="${producto.nombreProducto}"></td>
                 <td class="filaa" th:text="${producto.precioProducto}"></td>
                 <td class="filaa" th:text="${producto.stockProducto}"></td>
-                <td class="filaa" th:text="${producto.distribuidor.nombreDistribuidor}"></td>
+                <td class="filaa" th:text="${producto.distribuidor.nombreDistribuidor}" sec:authorize="hasRole('ADMIN')"></td>
 
-                <td>
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{/producto/modificar-producto/{id} (id=${producto.id_producto})}"
                        class="btn btn-success me-2">Modificar <i class="fas fa-pen-nib" aria-hidden="true"></i></a>
                     <a th:href="@{/producto/eliminar-producto/{id} (id=${producto.id_producto})}"
