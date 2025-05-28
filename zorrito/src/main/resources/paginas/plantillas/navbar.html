@@ -32,6 +32,7 @@
                             <ul class="dropdown-menu" aria-labelledby="productosDropdown">
                                 <li><a class="dropdown-item" th:href="@{/producto/listar_productos}">Listar productos</a></li>
                                 <li><a class="dropdown-item" th:href="@{/producto/agregar_producto}" sec:authorize="hasRole('ADMIN')">Agregar producto</a></li>
+                                <li><a class="dropdown-item" th:href="@{/corte/listar_cortes}" sec:authorize="hasRole('ADMIN')">Historial inventario</a></li>
                             </ul>
                         </li>
 

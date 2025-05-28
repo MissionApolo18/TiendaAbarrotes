@@ -5,6 +5,7 @@ import mx.unam.aragon.zorrito.dto.VentaDto;
 import mx.unam.aragon.zorrito.modelo.*;
 
 import mx.unam.aragon.zorrito.service.Cliente.ClienteService;
+import mx.unam.aragon.zorrito.service.CorteInventario.CorteInventarioService;
 import mx.unam.aragon.zorrito.service.DetalleVenta.DetalleVentaService;
 import mx.unam.aragon.zorrito.service.MetodoPago.MetodoPagoService;
 import mx.unam.aragon.zorrito.service.Pago.PagoService;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -45,6 +47,8 @@ public class VentaController {
     private PagoService pagoService;
     @Autowired
     private UsuariosService usuariosService;
+    @Autowired
+    private CorteInventarioService corteInventarioService;
 
     @GetMapping("/agregar_venta")
     public String mostrarFormularioVenta(Model model) {
@@ -70,10 +74,16 @@ public class VentaController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Usuarios usuario = usuariosService.findByUsername(username);
+        Cliente cliente = clienteService.findByTelefono(ventaDto.getTelefonoCliente());
+
+        if (cliente == null) {
+            redirectAttributes.addFlashAttribute("error", "❌ No se encontró un cliente con ese número telefónico.");
+            return "redirect:/venta/agregar_venta"; // ⛔ Detener flujo si no se encuentra cliente
+        }
 
         // Crear y guardar venta
         Venta venta = new Venta();
-        venta.setIdClienteVenta(clienteService.findById(ventaDto.getIdCliente()));
+        venta.setIdClienteVenta(clienteService.findByTelefono(ventaDto.getTelefonoCliente()));
         venta.setIdUsuarioVenta(usuario);
         venta.setFecha(new java.util.Date());
         Venta ventaGuardada = ventaService.save(venta);
@@ -99,10 +109,18 @@ public class VentaController {
                 detalle.setCantidad(item.getCantidad());
                 detalle.setPrecioUnitario(item.getPrecioUnitario());
                 detalleVentaService.save(detalle);
+
+                // Registrar corte tipo "fin"
+                CorteInventario corte = new CorteInventario();
+                corte.setProducto(producto);
+                corte.setFecha(new Date());
+                corte.setTipo(Tipo.fin);
+                corte.setCantidad(nuevoStock);
+                corteInventarioService.save(corte);
             });
         } else {
             // Puedes manejarlo como error, log, o simplemente continuar
-            System.out.println("Advertencia: No se proporcionaron detalles de venta (items)");
+            System.out.println("Advertencia: No se proporcionaron detalles de venta");
         }
 
         // Guardar pago
@@ -125,7 +143,7 @@ public class VentaController {
         for(Venta venta: ventas){
             HistorialVentaDto dto = new HistorialVentaDto();
             dto.setNombreCajero(venta.getIdUsuarioVenta().getNombreUsuario());
-            dto.setNombreCliente(venta.getIdClienteVenta().getNombreCliente());
+            dto.setNombreCliente(venta.getIdClienteVenta().getTelefonoCliente());
             dto.setFechaVenta(venta.getFecha());
 
 

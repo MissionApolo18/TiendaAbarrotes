@@ -38,4 +38,10 @@ public class ClienteServiceImpl implements ClienteService {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.orElse(null);
     }
+
+    @Override
+    public Cliente findByTelefono(String telefono) {
+        return clienteRepository.findByTelefonoCliente(telefono).orElse(null);
+    }
+
 }

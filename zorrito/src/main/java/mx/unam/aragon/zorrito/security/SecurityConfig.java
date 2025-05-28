@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")          // URL de tu vista de login
                         .defaultSuccessUrl("/index", true) // A dónde va después de loguearse
+                        .failureUrl("/login?error")
                         .permitAll()                  // Permite ver el login sin estar autenticado
                 )
 

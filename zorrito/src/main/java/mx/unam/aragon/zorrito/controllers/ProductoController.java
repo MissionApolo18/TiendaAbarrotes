@@ -1,8 +1,11 @@
 package mx.unam.aragon.zorrito.controllers;
 
 import jakarta.validation.Valid;
+import mx.unam.aragon.zorrito.modelo.CorteInventario;
 import mx.unam.aragon.zorrito.modelo.Distribuidor;
 import mx.unam.aragon.zorrito.modelo.Producto;
+import mx.unam.aragon.zorrito.modelo.Tipo;
+import mx.unam.aragon.zorrito.service.CorteInventario.CorteInventarioService;
 import mx.unam.aragon.zorrito.service.Distribuidor.DistribuidorService;
 import mx.unam.aragon.zorrito.service.Producto.ProductoService;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,6 +30,8 @@ public class ProductoController {
     private ProductoService productoService;
     @Autowired
     private DistribuidorService distribuidorService;
+    @Autowired
+    private CorteInventarioService corteInventarioService;
 
     // para agregar un producto
     @GetMapping("/agregar_producto")
@@ -58,6 +64,13 @@ public class ProductoController {
         }
 
         productoService.save(producto);
+        // 👇 Aquí se registra el corte tipo "inicio"
+        CorteInventario corte = new CorteInventario();
+        corte.setProducto(producto);
+        corte.setFecha(new Date());
+        corte.setTipo(Tipo.inicio);
+        corte.setCantidad(producto.getStockProducto());
+        corteInventarioService.save(corte);
         return "redirect:/producto/listar_productos";
     }
 

@@ -13,18 +13,17 @@
     <h3>Zorro Abarrotero</h3>
   </div>
 
-  <form th:action="@{/venta/guardar}" th:object="${ventaDto}" method="post">
+  <form th:action="@{/venta/guardar}" th:object="${ventaDto}" onsubmit="return validarFormulario()" method="post">
 
     <div th:if="${mensaje}" class="alert alert-success mt-3" role="alert">
       <p th:text="${mensaje}"></p>
     </div>
 
     <!-- Cliente -->
-    <label for="cliente">Cliente</label>
-    <select id="cliente" th:field="*{idCliente}" class="form-select" required>
-      <option value="">--Seleccione Cliente--</option>
-      <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}" th:text="${cliente.nombreCliente}"></option>
-    </select>
+    <div>
+      <label for="telefonoCliente">Teléfono del Cliente:</label>
+      <input type="text" id="telefonoCliente" name="telefonoCliente" class="form-control" th:field="*{telefonoCliente}" required />
+    </div>
 
     <!-- Productos -->
     <label for="producto">Producto</label>
@@ -39,7 +38,7 @@
     </select>
 
     <label for="cantidad">Cantidad</label>
-    <input type="number" id="cantidad" min="1" value="1" class="form-control"/>
+    <input type="number" id="cantidad" min="1" step="1" value="1" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
 
     <button type="button" id="agregarProducto" class="btn btn-primary mt-2">Agregar al carrito</button>
 
@@ -80,11 +79,6 @@
 
   </form>
 
-
-
-
-  </main>
-
 </div>
 
 <div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
@@ -104,10 +98,12 @@
     const nombre = selectedOption.text;
     const precio = parseFloat(selectedOption.getAttribute("data-precio"));
     const stock = parseInt(selectedOption.getAttribute("data-stock"));
-    const cantidad = parseInt(cantidadInput.value);
 
-    if (!idProducto || cantidad < 1) {
-      alert("Seleccione un producto y una cantidad válida");
+    const cantidad = parseInt(cantidadInput.value, 10);
+
+    if (!idProducto || isNaN(cantidad) || cantidad < 1) {
+      alert("Seleccione un producto y una cantidad válida (solo números enteros mayores que 0).");
+      cantidadInput.focus();
       return;
     }
 
@@ -187,14 +183,22 @@
       descuento = 0.20;
     } else if (cantidad >= 100) {
       descuento = 0.15;
-    } else if (cantidad >= 5){
-      descuento = 0.08
-    }else if (cantidad >= 10){
-      descuento = 0.12
+    } else if (cantidad >= 10) {
+      descuento = 0.12;
+    } else if (cantidad >= 5) {
+      descuento = 0.08;
     }
 
     const precioFinal = precioUnitario * (1 - descuento);
     return cantidad * precioFinal;
+  }
+
+  function validarFormulario() {
+    if (carrito.length === 0) {
+      alert("Agrega al menos un producto al carrito.");
+      return false;
+    }
+    return true;
   }
 
 </script>

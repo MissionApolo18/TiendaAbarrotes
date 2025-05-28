@@ -64,7 +64,7 @@ CREATE TABLE `corte_inventario` (
   PRIMARY KEY (`id_corte`),
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `corte_inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +73,14 @@ CREATE TABLE `corte_inventario` (
 
 LOCK TABLES `corte_inventario` WRITE;
 /*!40000 ALTER TABLE `corte_inventario` DISABLE KEYS */;
+INSERT INTO `corte_inventario` VALUES
+(1,'2025-05-27','inicio',2,1000),
+(2,'2025-05-27','inicio',10,400),
+(3,'2025-05-27','inicio',11,200),
+(4,'2025-05-27','inicio',12,300),
+(5,'2025-05-27','inicio',13,400),
+(6,'2025-05-27','fin',12,280),
+(7,'2025-05-27','fin',2,999);
 /*!40000 ALTER TABLE `corte_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +132,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +147,9 @@ INSERT INTO `detalle_venta` VALUES
 (8,8,10,50,56.00),
 (9,8,2,20,30.00),
 (10,9,11,200,20.00),
-(11,9,10,200,56.00);
+(11,9,10,200,56.00),
+(12,10,12,20,40.00),
+(13,11,2,1,30.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +227,7 @@ CREATE TABLE `pago` (
   KEY `id_metodo` (`id_metodo`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +239,9 @@ LOCK TABLES `pago` WRITE;
 INSERT INTO `pago` VALUES
 (4,7,1,1700.00),
 (5,8,1,9800.00),
-(6,9,1,12160.00);
+(6,9,1,12160.00),
+(7,10,1,736.00),
+(8,11,1,30.00);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,10 +298,10 @@ CREATE TABLE `producto` (
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` VALUES
-(2,'Coca Cola 1L',30.00,1000,3,NULL),
+(2,'Coca Cola 1L',30.00,999,3,NULL),
 (10,'Helado Vainilla',56.00,400,2,NULL),
 (11,'Pepsi Dieta 600ml',20.00,200,3,NULL),
-(12,'Pizza Congelada',40.00,300,6,NULL),
+(12,'Pizza Congelada',40.00,280,6,NULL),
 (13,'Costal Croquetas Dog Chow',200.00,400,7,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -401,7 +413,7 @@ CREATE TABLE `venta` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +425,9 @@ LOCK TABLES `venta` WRITE;
 INSERT INTO `venta` VALUES
 (7,2,2,'2025-05-27 11:00:00',0.00),
 (8,3,2,'2025-05-27 11:04:04',0.00),
-(9,5,3,'2025-05-27 13:44:01',0.00);
+(9,5,3,'2025-05-27 13:44:01',0.00),
+(10,2,2,'2025-05-27 15:33:58',0.00),
+(11,5,2,'2025-05-27 18:48:13',0.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -426,4 +440,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-27 13:55:24
+-- Dump completed on 2025-05-27 19:08:29
