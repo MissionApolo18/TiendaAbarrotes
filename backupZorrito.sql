@@ -64,7 +64,7 @@ CREATE TABLE `corte_inventario` (
   PRIMARY KEY (`id_corte`),
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `corte_inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,9 @@ INSERT INTO `corte_inventario` VALUES
 (6,'2025-05-27','fin',12,280),
 (7,'2025-05-27','fin',2,999),
 (8,'2025-05-27','fin',10,200),
-(9,'2025-05-27','fin',12,180);
+(9,'2025-05-27','fin',12,180),
+(10,'2025-05-28','fin',12,150),
+(11,'2025-05-28','fin',10,190);
 /*!40000 ALTER TABLE `corte_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +136,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +155,9 @@ INSERT INTO `detalle_venta` VALUES
 (12,10,12,20,40.00),
 (13,11,2,1,30.00),
 (14,12,10,200,56.00),
-(15,12,12,100,40.00);
+(15,12,12,100,40.00),
+(16,13,12,30,40.00),
+(17,13,10,10,56.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +235,7 @@ CREATE TABLE `pago` (
   KEY `id_metodo` (`id_metodo`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +250,8 @@ INSERT INTO `pago` VALUES
 (6,9,1,12160.00),
 (7,10,1,736.00),
 (8,11,1,30.00),
-(9,12,1,12360.00);
+(9,12,1,12360.00),
+(10,13,1,1548.80);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,9 +309,9 @@ LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` VALUES
 (2,'Coca Cola 1L',30.00,999,3,NULL),
-(10,'Helado Vainilla',56.00,200,2,NULL),
+(10,'Helado Vainilla',56.00,190,2,NULL),
 (11,'Pepsi Dieta 600ml',20.00,200,3,NULL),
-(12,'Pizza Congelada',40.00,180,6,NULL),
+(12,'Pizza Congelada',40.00,150,6,NULL),
 (13,'Costal Croquetas Dog Chow',200.00,400,7,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -419,7 +424,7 @@ CREATE TABLE `venta` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -434,7 +439,8 @@ INSERT INTO `venta` VALUES
 (9,5,3,'2025-05-27 13:44:01',0.00),
 (10,2,2,'2025-05-27 15:33:58',0.00),
 (11,5,2,'2025-05-27 18:48:13',0.00),
-(12,3,2,'2025-05-27 19:19:32',0.00);
+(12,3,2,'2025-05-27 19:19:32',0.00),
+(13,2,2,'2025-05-28 12:39:49',0.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -447,4 +453,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-27 23:04:08
+-- Dump completed on 2025-05-28 12:46:45

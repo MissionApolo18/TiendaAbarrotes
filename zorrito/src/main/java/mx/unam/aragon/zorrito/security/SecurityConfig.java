@@ -36,34 +36,51 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // Registra el authenticationProvider para que lo use Spring Security
                 .authenticationProvider(authenticationProvider())
 
-                // Define qué rutas son públicas y cuáles requieren autenticación
                 .authorizeHttpRequests(auth -> auth
-                        // Recursos estáticos y páginas públicas:
-                        .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Rutas para el ADMIN:
+                        .requestMatchers(
+                                "/producto/agregar_producto",
+                                "/corte/**",
+                                "/usuario/**",
+                                "/cliente/**",
+                                "/distribuidor/**",
+                                "/venta/listar_venta"
+                        ).hasRole("ADMIN")
+                        // Rutas para CAJERO:
+                        .requestMatchers(
+                                "/venta/agregar_venta"
+                        ).hasRole("CAJERO")
+                        // Ambas roles pueden acceder:
                         .requestMatchers("/index").authenticated()
-                        // Cualquier otra petición requiere estar autenticado:
+                        // Recursos estáticos y login:
+                        .requestMatchers("/", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Todo lo demás requiere autenticación:
                         .anyRequest().authenticated()
                 )
 
-                // Configuración del formulario de login
                 .formLogin(form -> form
-                        .loginPage("/login")          // URL de tu vista de login
-                        .defaultSuccessUrl("/index", true) // A dónde va después de loguearse
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/index", true)
                         .failureUrl("/login?error")
-                        .permitAll()                  // Permite ver el login sin estar autenticado
+                        .permitAll()
                 )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
+                )
+
+                // 👇 Esto redirige a /index si el usuario intenta acceder a algo sin permiso
+                .exceptionHandling(exception ->
+                        exception.accessDeniedPage("/index")
                 );
 
         return http.build();
     }
+
 }
 
 

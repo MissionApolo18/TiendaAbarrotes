@@ -26,7 +26,7 @@
       </thead>
       <tbody>
       <tr th:each="corte: ${cortes}">
-        <td class="filaa" th:text="${corte.fecha}"></td>
+        <td th:text="${#dates.format(corte.fecha, 'yyyy-MM-dd')}"></td>
         <td class="filaa" th:text="${corte.tipo}"></td>
         <td class="filaa" th:text="${corte.producto.nombreProducto}"></td>
         <td class="filaa" th:text="${corte.cantidad}" sec:authorize="hasRole('ADMIN')"></td>

@@ -9,4 +9,5 @@ public interface CorteInventarioService {
     List<CorteInventario> findAll();
     void deleteById(Long id);
     CorteInventario findById(Long id);
+    public List<CorteInventario> obtenerListaCorte();
 }
