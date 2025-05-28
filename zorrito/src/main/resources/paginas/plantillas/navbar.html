@@ -32,6 +32,7 @@
                             <ul class="dropdown-menu" aria-labelledby="productosDropdown">
                                 <li><a class="dropdown-item" th:href="@{/producto/listar_productos}">Listar productos</a></li>
                                 <li><a class="dropdown-item" th:href="@{/producto/agregar_producto}" sec:authorize="hasRole('ADMIN')">Agregar producto</a></li>
+                                <li><a class="dropdown-item" th:href="@{/corte/listar_cortes}" sec:authorize="hasRole('ADMIN')">Historial inventario</a></li>
                             </ul>
                         </li>
 
@@ -57,11 +58,12 @@
 
                         <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="distribuidorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Proovedores
+                                Proveedores
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="clientesDropdown">
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Proovedores</a></li>
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Proovedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Proveedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Proveedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/realizar_pedido}">Realizar pedido</a></li>
                             </ul>
                         </li>
 

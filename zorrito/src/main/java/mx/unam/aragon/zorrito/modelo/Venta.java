@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "venta")
 @Data
@@ -31,5 +32,10 @@ public class Venta {
 	
 	@Column(name = "total")
 	private double total;
+	
+	
+	// Relación bidireccional con DetalleVenta
+	@OneToMany(mappedBy = "ventas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<DetalleVenta> detalleVentas;
 	
 }

@@ -16,27 +16,29 @@
     <main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
         <h1 th:text="${contenido}"></h1>
         <table th:if="${!productos.isEmpty()}" class="table table-striped table-hover table-sm">
-            <thead class="table-dark table-bordered">
+            <thead class="table-dark table-bordered table-hover">
             <tr>
-                <th class="column" scope="col"> Nombre</th>
-                <th class="column" scope="col"> Precio Unitario</th>
-                <th class="column" scope="col"> Cantidad de Producto</th>
-                <th class="column" scope="col" sec:authorize="hasRole('ADMIN')"> Distribuidor</th>
-                <th class="column" scope="col" sec:authorize="hasRole('ADMIN')"> Opciones</th>
+                <th scope="col"> Nombre</th>
+                <th scope="col"> Precio Unitario</th>
+                <th scope="col"> Cantidad de Producto</th>
+                <th scope="col" sec:authorize="hasRole('ADMIN')"> Distribuidor</th>
+                <th scope="col" sec:authorize="hasRole('ADMIN')"> Opciones</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="producto: ${productos}">
-                <td class="filaa" th:text="${producto.nombreProducto}"></td>
-                <td class="filaa" th:text="${producto.precioProducto}"></td>
-                <td class="filaa" th:text="${producto.stockProducto}"></td>
-                <td class="filaa" th:text="${producto.distribuidor.nombreDistribuidor}" sec:authorize="hasRole('ADMIN')"></td>
+            <tr th:each="producto: ${productos}" class="filaa table-hover" th:classappend="${producto.stockProducto}<20?'bg-warning':''">
+                <td class="filaa table-hover" th:text="${producto.nombreProducto}" th:classappend="${producto.stockProducto}<20?'bg-warning':''"></td>
+                <td class="filaa table-hover" th:text="${producto.precioProducto}" th:classappend="${producto.stockProducto}<20?'bg-warning':''"></td>
+                <td class="filaa table-hover" th:text="${producto.stockProducto}" th:classappend="${producto.stockProducto}<20?'bg-warning':''"></td>
+                <td class="filaa table-hover" th:text="${producto.distribuidor.nombreDistribuidor}" sec:authorize="hasRole('ADMIN')" th:classappend="${producto.stockProducto}<20?'bg-warning':''"></td>
 
-                <td sec:authorize="hasRole('ADMIN')">
+                <td sec:authorize="hasRole('ADMIN')" th:classappend="${producto.stockProducto}<20?'bg-warning':''">
                     <a th:href="@{/producto/modificar-producto/{id} (id=${producto.id_producto})}"
                        class="btn btn-success me-2">Modificar <i class="fas fa-pen-nib" aria-hidden="true"></i></a>
                     <a th:href="@{/producto/eliminar-producto/{id} (id=${producto.id_producto})}"
                        class="btn btn-danger">Eliminar <i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                    <a th:href="@{/pedido/agregar/{id}(id=${producto.id_producto})}" th:if="${producto.stockProducto} < 20"
+                       class="btn btn-info">Añadir a pedido <i class="fas fa-plus-circle"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -106,23 +108,6 @@
         background-color: #9b1d11;
     }
 
-
-    /* Cards */
-    .card, .filaa:hover {
-        background-color: #9b1d11;
-        color: #fbe7d9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-title {
-        color: #FFD700;
-    }
-
-    .card img {
-        border-radius: 10px;
-    }
-
     ul {
         list-style-type: none;
         padding: 0;
@@ -175,13 +160,12 @@
     .column, .filaa {
         background-color: #ec330a;
         color: #fbe7d9;
-        border: none;
-        border-radius: 5px;
     }
     .filaa:hover, .column:hover {
         background-color: #9b1d11;
         color: #fbe7d9;
     }
+
     /*Bottons Table*/
     .btn-success {
         background-color: #28a745 !important;
@@ -194,5 +178,14 @@
         border-color: #1e7e34 !important;
     }
 
+    .btn-info {
+        background-color: #1d6a04 !important;
+        border-color: #1d6a04 !important;
+        color: #fbe7d9 !important;
+    }
 
+    .btn-info:hover {
+        background-color: #174703 !important;
+        border-color: #174703 !important;
+    }
 </style>

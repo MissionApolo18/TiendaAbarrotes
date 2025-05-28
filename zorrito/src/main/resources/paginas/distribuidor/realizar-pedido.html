@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" /> <!-- Ruta dinámica correcta -->
+</head>
+<body>
+
+<!-- Barra de navegación -->
+<div th:replace="plantillas/navbar :: navegacion-seccion"></div>
+
+<div class="container">
+    <div class="text-center" style="margin:30px">
+        <h3>Pedido a Distribuidor</h3>
+    </div>
+
+    <form th:action="@{/realizar_pedido/guardar}" th:object="${pedidoDto}" onsubmit="return validarFormulario()" method="post">
+
+        <div th:if="${mensaje}" class="alert alert-success mt-3" role="alert">
+            <p th:text="${mensaje}"></p>
+        </div>
+
+        <!-- Distribuidor -->
+        <div class="mb-3">
+            <label for="nombreDistribuidor" class="form-label">Nombre del Distribuidor:</label>
+            <input type="text" id="nombreDistribuidor" th:field="${nombreDistribuidor}" class="form-control" required />
+        </div>
+
+        <!-- Productos -->
+        <div class="mb-3">
+            <label for="producto" class="form-label">Producto</label>
+            <select id="producto" class="form-select" required>
+                <option value="">--Seleccione Producto--</option>
+                <option th:each="producto : ${productos}"
+                        th:value="${producto.idProducto}"
+                        th:data-precio="${producto.precioProducto}"
+                        th:data-stock="${producto.stockProducto}"
+                        th:text="${producto.nombreProducto}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" id="cantidad" min="1" step="1" value="1" class="form-control" required />
+        </div>
+
+        <button type="button" id="agregarProducto" class="btn btn-primary mt-2">Agregar al Pedido</button>
+
+        <!-- Tabla del pedido -->
+        <table class="table mt-3" id="tablaCarrito">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Filas dinámicas aquí -->
+            </tbody>
+        </table>
+
+        <!-- Total -->
+        <div>
+            <strong>Total: $</strong><span id="totalVenta">0.00</span>
+        </div>
+
+        <!-- Forma de pago -->
+        <div class="mb-3">
+            <label for="metodoPago" class="form-label">Condición de pago</label>
+            <select id="metodoPago" th:field="${idMetodoPago}" class="form-select" required>
+                <option value="">--Seleccione condición--</option>
+                <option th:each="mp : ${metodosPago}" th:value="${mp.idMetodo}" th:text="${mp.descripcion}"></option>
+            </select>
+        </div>
+
+        <!-- Campos ocultos -->
+        <input type="hidden" id="totalInput" th:field="${total}" />
+        <div id="carritoInputs"></div>
+
+        <button type="submit" class="btn btn-success mt-3">Enviar Pedido</button>
+    </form>
+</div>
+
+<!-- Footer -->
+<div th:replace="plantillas/footer :: pie-pagina-seccion"></div>
+
+<!-- JS -->
+<script>
+    const productoSelect = document.getElementById("producto");
+    const cantidadInput = document.getElementById("cantidad");
+    const agregarBtn = document.getElementById("agregarProducto");
+    const tablaCarrito = document.getElementById("tablaCarrito").getElementsByTagName('tbody')[0];
+    const totalVenta = document.getElementById("totalVenta");
+    const carritoInputs = document.getElementById("carritoInputs");
+
+    let carrito = [];
+
+    agregarBtn.addEventListener("click", () => {
+        const selectedOption = productoSelect.options[productoSelect.selectedIndex];
+        const idProducto = selectedOption.value;
+        const nombre = selectedOption.text;
+        const precio = parseFloat(selectedOption.getAttribute("data-precio"));
+        const stock = parseInt(selectedOption.getAttribute("data-stock"));
+        const cantidad = parseInt(cantidadInput.value);
+
+        if (!idProducto || isNaN(cantidad) || cantidad < 1) {
+            alert("Seleccione un producto y una cantidad válida.");
+            return;
+        }
+
+        const itemExistente = carrito.find(p => p.idProducto === idProducto);
+        const cantidadActual = itemExistente ? itemExistente.cantidad : 0;
+
+        if (cantidad + cantidadActual > stock) {
+            alert(`Solo hay ${stock} unidades disponibles. Ya agregaste ${cantidadActual}.`);
+            return;
+        }
+
+        if (itemExistente) {
+            itemExistente.cantidad += cantidad;
+            itemExistente.subtotal = itemExistente.precio * itemExistente.cantidad;
+
+            const fila = document.getElementById("fila-" + idProducto);
+            fila.querySelector(".cantidad").textContent = itemExistente.cantidad;
+            fila.querySelector(".subtotal").textContent = itemExistente.subtotal.toFixed(2);
+        } else {
+            const subtotal = cantidad * precio;
+            carrito.push({ idProducto, nombre, precio, cantidad, subtotal });
+
+            const fila = tablaCarrito.insertRow();
+            fila.id = "fila-" + idProducto;
+            fila.innerHTML = `
+                <td>${nombre}</td>
+                <td class="cantidad">${cantidad}</td>
+                <td>$${precio.toFixed(2)}</td>
+                <td class="subtotal">$${subtotal.toFixed(2)}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarProducto('${idProducto}')">Eliminar</button></td>
+            `;
+        }
+
+        actualizarCarrito();
+    });
+
+    function actualizarCarrito() {
+        const total = carrito.reduce((acc, item) => acc + item.subtotal, 0);
+        totalVenta.textContent = total.toFixed(2);
+        document.getElementById("totalInput").value = total.toFixed(2);
+
+        carritoInputs.innerHTML = "";
+
+        carrito.forEach((item, index) => {
+            carritoInputs.innerHTML += `
+                <input type="hidden" name="items[${index}].idProducto" value="${item.idProducto}" />
+                <input type="hidden" name="items[${index}].cantidad" value="${item.cantidad}" />
+                <input type="hidden" name="items[${index}].precioUnitario" value="${item.precio}" />
+            `;
+        });
+    }
+
+    function eliminarProducto(idProducto) {
+        carrito = carrito.filter(item => item.idProducto !== idProducto);
+        const fila = document.getElementById("fila-" + idProducto);
+        fila.remove();
+        actualizarCarrito();
+    }
+
+    function validarFormulario() {
+        if (carrito.length === 0) {
+            alert("Agrega al menos un producto al pedido.");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>

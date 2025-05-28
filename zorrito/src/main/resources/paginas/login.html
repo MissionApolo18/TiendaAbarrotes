@@ -11,6 +11,13 @@
         <div class="card-body">
             <h2 class="text-center mb-4">Iniciar sesión</h2>
 
+            <div th:if="${errorMsg}" class="alert alert-danger" role="alert" style="margin-bottom:15px;">
+                <p th:text="${errorMsg}"></p>
+            </div>
+            <div th:if="${msg}" class="alert alert-success" role="alert" style="margin-bottom:15px;">
+                <p th:text="${msg}"></p>
+            </div>
+
             <!-- Formulario de login -->
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
