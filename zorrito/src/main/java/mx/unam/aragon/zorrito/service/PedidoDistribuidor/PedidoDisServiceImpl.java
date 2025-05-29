@@ -1,12 +1,15 @@
 package mx.unam.aragon.zorrito.service.PedidoDistribuidor;
 
-import mx.unam.aragon.zorrito.modelo.Pago;
+import mx.unam.aragon.zorrito.modelo.DetallePedidoDistribuidor;
 import mx.unam.aragon.zorrito.modelo.PedidoDistribuidor;
+import mx.unam.aragon.zorrito.modelo.Producto;
+import mx.unam.aragon.zorrito.repository.DetallePedidoDistribuidorRepository;
 import mx.unam.aragon.zorrito.repository.PedidoDistribuidorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +18,8 @@ public class PedidoDisServiceImpl implements PedidoDisService {
 
     @Autowired
     private PedidoDistribuidorRepository pedidoDisRepository;
+    @Autowired
+    private DetallePedidoDistribuidorRepository detallePedidoDistribuidorRepository;
 
     @Override
     @Transactional

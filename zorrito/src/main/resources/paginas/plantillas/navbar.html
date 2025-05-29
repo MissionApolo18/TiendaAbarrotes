@@ -76,6 +76,17 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pedidos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="pedidosDropdown">
+                                <li><a class="dropdown-item" th:href="@{/pedido/historial}">Historial Pedidos</a></li>
+                                <li><a class="dropdown-item" th:href="@{/pedido/nuevo_pedido}">Realizar Pedido</a></li>
+                            </ul>
+                        </li>
+
+
                     </ul>
 
                     <span class="navbar-text text-light me-3" sec:authentication="name"></span>

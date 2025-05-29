@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/header::cabecero-seccion(titulo = 'Inicio')}">
+</head>
+<body>
+
+<!--Barra de navegacion-->
+<div th:replace="~{plantillas/navbar::navegacion-seccion}"/>
+
+<!--Div para desplegar la tabla    -->
+<div class="container">
+  <div class="container text-center" style="margin:30px">
+    <h3>Zorro Abarrotero</h3>
+  </div>
+
+  <!-- Formulario de pedido simplificado -->
+  <form th:action="@{/pedido/guardar}" th:object="${pedidoDto}" onsubmit="return validarFormulario()" method="post">
+    <!-- Distribuidor -->
+    <label for="idDistribuidor">Distribuidor</label>
+    <select id="idDistribuidor" th:field="*{idDistribuidor}" class="form-select" required>
+      <option value="">--Seleccione Distribuidor--</option>
+      <option th:each="d : ${distribuidores}" th:value="${d.id_distribuidor}" th:text="${d.nombreDistribuidor}"></option>
+    </select>
+
+    <!-- Producto -->
+    <label for="producto">Producto</label>
+    <select id="producto" class="form-select">
+      <option value="">--Seleccione Producto--</option>
+      <option th:each="producto : ${productos}"
+              th:value="${producto.id_producto}"
+              th:text="${producto.nombreProducto}">
+      </option>
+    </select>
+
+    <!-- Cantidad -->
+    <label for="cantidad">Cantidad</label>
+    <input type="number" id="cantidad" min="1" class="form-control"/>
+
+    <!-- Botón agregar -->
+    <button type="button" id="agregarProducto" class="btn btn-primary mt-2">Agregar al pedido</button>
+
+    <!-- Tabla productos agregados -->
+    <table class="table mt-3">
+      <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Acción</th>
+      </tr>
+      </thead>
+      <tbody id="tablaCarrito"></tbody>
+    </table>
+
+    <!-- Campos ocultos -->
+    <div id="carritoInputs"></div>
+
+    <!-- Botón submit -->
+    <button type="submit" class="btn btn-success mt-3">Registrar Pedido</button>
+  </form>
+
+
+</div>
+
+<div th:replace="~{plantillas/footer::pie-pagina-seccion}"></div>
+<script>
+  const productoSelect = document.getElementById("producto");
+  const cantidadInput = document.getElementById("cantidad");
+  const agregarBtn = document.getElementById("agregarProducto");
+  const tablaCarrito = document.getElementById("tablaCarrito");
+  const carritoInputs = document.getElementById("carritoInputs");
+
+  let carrito = [];
+
+  agregarBtn.addEventListener("click", () => {
+    const selectedOption = productoSelect.options[productoSelect.selectedIndex];
+    const idProducto = selectedOption.value;
+    const nombre = selectedOption.text;
+    const cantidad = parseInt(cantidadInput.value, 10);
+
+    if (!idProducto || isNaN(cantidad) || cantidad < 1) {
+      alert("Seleccione un producto y una cantidad válida.");
+      return;
+    }
+
+    // Verificar si ya está
+    const itemExistente = carrito.find(p => p.idProducto === idProducto);
+    if (itemExistente) {
+      itemExistente.cantidad += cantidad;
+
+      const fila = document.getElementById("fila-" + idProducto);
+      fila.querySelector(".cantidad").textContent = itemExistente.cantidad;
+    } else {
+      carrito.push({ idProducto, nombre, cantidad });
+
+      const fila = tablaCarrito.insertRow();
+      fila.id = "fila-" + idProducto;
+      fila.innerHTML = `
+        <td>${nombre}</td>
+        <td class="cantidad">${cantidad}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarProducto('${idProducto}')">Eliminar</button></td>
+      `;
+    }
+
+    actualizarCarrito();
+  });
+
+  function eliminarProducto(idProducto) {
+    carrito = carrito.filter(item => item.idProducto !== idProducto);
+    const fila = document.getElementById("fila-" + idProducto);
+    if (fila) fila.remove();
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    carritoInputs.innerHTML = "";
+    carrito.forEach((item, index) => {
+      carritoInputs.innerHTML += `
+        <input type="hidden" name="items[${index}].idProducto" value="${item.idProducto}" />
+        <input type="hidden" name="items[${index}].cantidad" value="${item.cantidad}" />
+      `;
+    });
+  }
+
+  function validarFormulario() {
+    if (carrito.length === 0) {
+      alert("Agrega al menos un producto.");
+      return false;
+    }
+    return true;
+  }
+</script>
+
+
+</body>
+</html>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: #9b1d11;
+    background-color: #fbe7d9;
+    padding: 20px;
+  }
+
+  /* Navbar */
+  .navbar {
+    background-color: #BD280CFF !important;
+    border-radius: 10px;
+  }
+
+  .navbar-brand,
+  .nav-link {
+    color: #fbe7d9 !important;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link.active {
+    border-bottom: 2px solid #FFD700;
+  }
+
+  .nav-link:hover {
+    color: #FFD700 !important;
+  }
+
+  .dropdown-menu {
+    background-color: #fbe7d9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-item {
+    color: #333333 !important;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f7cbb1;
+  }
+
+  /* Buttons */
+  .btn {
+    background-color: #ec330a;
+    color: #fbe7d9;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #9b1d11;
+  }
+
+  /* Forms */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fbe7d9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    color: #333333;
+  }
+
+  .form-container label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #fbe7d9;
+    border-radius: 5px;
+  }
+
+  /* Cards */
+  .card {
+    background-color: #9b1d11;
+    color: #fbe7d9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    color: #FFD700;
+  }
+
+  .card img {
+    border-radius: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #fbe7d9;
+    font-size: 14px;
+  }
+
+  /* Header */
+  header a {
+    text-decoration: none;
+    color: #c4220a;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  header a:hover {
+    text-decoration: underline;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    border: 1px solid #c3e6cb;
+  }
+
+</style>

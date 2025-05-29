@@ -18,11 +18,11 @@ public class DetallePedidoDistribuidor {
 	
 	@JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido")
 	@ManyToOne
-	private PedidoDistribuidor IdpedidoDis;
+	private PedidoDistribuidor pedidoDistribuidor;
 	
 	@JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
 	@ManyToOne
-	private Producto IdProductoDist;
+	private Producto producto;
 	
 	@Column(name = "cantidad")
 	private int cantidad;

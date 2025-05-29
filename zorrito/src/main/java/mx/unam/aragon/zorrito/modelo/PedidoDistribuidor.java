@@ -3,6 +3,7 @@ package mx.unam.aragon.zorrito.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name = "pedido_distribuidor")
@@ -23,5 +24,5 @@ public class PedidoDistribuidor {
 	private Distribuidor idDistribuidor;
 	
 	@Column(name = "fecha")
-	private Date fecha;
+	private LocalDate fecha;
 }

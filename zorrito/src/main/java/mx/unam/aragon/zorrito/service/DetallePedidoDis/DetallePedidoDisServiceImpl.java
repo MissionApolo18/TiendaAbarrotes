@@ -2,6 +2,8 @@ package mx.unam.aragon.zorrito.service.DetallePedidoDis;
 
 import mx.unam.aragon.zorrito.modelo.CorteInventario;
 import mx.unam.aragon.zorrito.modelo.DetallePedidoDistribuidor;
+import mx.unam.aragon.zorrito.modelo.PedidoDistribuidor;
+import mx.unam.aragon.zorrito.modelo.Producto;
 import mx.unam.aragon.zorrito.repository.DetallePedidoDistribuidorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +41,10 @@ public class DetallePedidoDisServiceImpl implements DetallePedidoDistribuidorSer
     public DetallePedidoDistribuidor findById(Long id) {
         Optional<DetallePedidoDistribuidor> op = detallePedidoRepository.findById(id);
         return op.orElse(null);
+    }
+
+    @Override
+    public List<DetallePedidoDistribuidor> findByPedidoDistribuidor(PedidoDistribuidor pedido) {
+        return detallePedidoRepository.findByPedidoDistribuidor(pedido);
     }
 }

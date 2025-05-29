@@ -15,18 +15,34 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+//    public void enviarCorreoConAdjunto(String destinatario, String asunto, String cuerpo, byte[] pdfBytes, String nombreAdjunto) throws MessagingException {
+//        MimeMessage mensaje = mailSender.createMimeMessage();
+//
+//        MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+//        helper.setTo(destinatario);
+//        helper.setSubject(asunto);
+//        helper.setText(cuerpo, true); // HTML permitido
+//
+//        InputStreamSource attachment = new ByteArrayResource(pdfBytes);
+//        helper.addAttachment(nombreAdjunto, attachment);
+//
+//        mailSender.send(mensaje);
+//    }
+
+
     public void enviarCorreoConAdjunto(String destinatario, String asunto, String cuerpo, byte[] pdfBytes, String nombreAdjunto) throws MessagingException {
         MimeMessage mensaje = mailSender.createMimeMessage();
-
         MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
         helper.setTo(destinatario);
         helper.setSubject(asunto);
         helper.setText(cuerpo, true); // HTML permitido
 
-        InputStreamSource attachment = new ByteArrayResource(pdfBytes);
-        helper.addAttachment(nombreAdjunto, attachment);
+        // Solo adjuntar si pdfBytes y nombreAdjunto no son null
+        if (pdfBytes != null && nombreAdjunto != null) {
+            InputStreamSource attachment = new ByteArrayResource(pdfBytes);
+            helper.addAttachment(nombreAdjunto, attachment);
+        }
 
         mailSender.send(mensaje);
     }
-
 }

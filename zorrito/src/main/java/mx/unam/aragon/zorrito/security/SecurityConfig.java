@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/usuario/**",
                                 "/cliente/**",
                                 "/distribuidor/**",
-                                "/venta/listar_venta"
+                                "/venta/listar_venta",
+                                "pedidos/**"
                         ).hasRole("ADMIN")
                         // Rutas para CAJERO:
                         .requestMatchers(
