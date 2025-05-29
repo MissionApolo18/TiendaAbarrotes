@@ -27,7 +27,7 @@
                 <td th:text="${pedido.fecha}"></td>
                 <td>
                     <ul>
-                        <li th:each="item : ${pedido.items}" th:text="${item}"></li>
+                        <li th:each="item : ${pedido.productosYcantidades}" th:text="${item}"></li>
                     </ul>
                 </td>
             </tr>

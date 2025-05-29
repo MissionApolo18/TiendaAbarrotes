@@ -17,5 +17,6 @@ import java.util.List;
 public class HistorialPedidoDto {
     private String nombreProveedor;
     private LocalDate fecha;
-    private List<String> items;
+    private List<String> productosYcantidades;
+
 }

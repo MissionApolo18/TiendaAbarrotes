@@ -1,8 +1,10 @@
 package mx.unam.aragon.zorrito.controllers;
 
 import mx.unam.aragon.zorrito.dto.HistorialVentaDto;
+import mx.unam.aragon.zorrito.dto.pedido.HistorialPedidoDto;
 import mx.unam.aragon.zorrito.modelo.CorteInventario;
 import mx.unam.aragon.zorrito.service.CorteInventario.CorteInventarioService;
+import mx.unam.aragon.zorrito.service.PedidoDistribuidor.PedidoDisService;
 import mx.unam.aragon.zorrito.service.Venta.VentaService;
 import mx.unam.aragon.zorrito.service.reportes.ReporteExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +32,37 @@ public class ReporteExcelController {
     @Autowired
     private VentaService ventaService;
 
+    @Autowired
+    private PedidoDisService pedidoService;
+
+
+//    @GetMapping("/excel")
+//    public ResponseEntity<InputStreamResource> descargarReporteExcel() throws IOException {
+//        List<CorteInventario> listaCorte = corteInventarioService.obtenerListaCorte();
+//        List<HistorialVentaDto> historial = ventaService.obtenerHistorialVentas();
+//
+//        ByteArrayInputStream in = reporteExcelService.generarReporte(listaCorte, historial);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Disposition", "attachment; filename=reporte_inventario_ventas.xlsx");
+//
+//        return ResponseEntity
+//                .ok()
+//                .headers(headers)
+//                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+//                .body(new InputStreamResource(in));
+//    }
 
     @GetMapping("/excel")
     public ResponseEntity<InputStreamResource> descargarReporteExcel() throws IOException {
         List<CorteInventario> listaCorte = corteInventarioService.obtenerListaCorte();
-        List<HistorialVentaDto> historial = ventaService.obtenerHistorialVentas();
+        List<HistorialVentaDto> historialVentas = ventaService.obtenerHistorialVentas();
+        List<HistorialPedidoDto> historialPedidos = pedidoService.obtenerHistorialPedidos(); // Nuevo
 
-        ByteArrayInputStream in = reporteExcelService.generarReporte(listaCorte, historial);
+        ByteArrayInputStream in = reporteExcelService.generarReporte(listaCorte, historialVentas, historialPedidos);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=reporte_inventario_ventas.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=reporte_inventario_ventas_pedidos.xlsx");
 
         return ResponseEntity
                 .ok()

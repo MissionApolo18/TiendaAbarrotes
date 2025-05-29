@@ -1,5 +1,6 @@
 package mx.unam.aragon.zorrito.service.PedidoDistribuidor;
 
+import mx.unam.aragon.zorrito.dto.pedido.HistorialPedidoDto;
 import mx.unam.aragon.zorrito.modelo.DetallePedidoDistribuidor;
 import mx.unam.aragon.zorrito.modelo.PedidoDistribuidor;
 
@@ -10,6 +11,6 @@ public interface PedidoDisService {
     List<PedidoDistribuidor> findAll();
     void deleteById(Long id);
     PedidoDistribuidor findById(Long id);
-
+    List<HistorialPedidoDto> obtenerHistorialPedidos();
 
 }

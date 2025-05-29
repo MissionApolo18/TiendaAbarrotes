@@ -138,12 +138,12 @@ public class PedidoController {
                 items.add(nombreProducto + " - " + cantidad + " unidades");
             }
 
-            dto.setItems(items);
+            dto.setProductosYcantidades(items);
             historial.add(dto);
         }
 
         model.addAttribute("pedidos", historial);
-        return "pedido/lista-pedido"; // Thymeleaf renderiza esta vista
+        return "pedido/lista-pedido";
     }
 
 

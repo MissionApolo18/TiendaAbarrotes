@@ -1,6 +1,7 @@
 package mx.unam.aragon.zorrito.service.reportes;
 
 import mx.unam.aragon.zorrito.dto.HistorialVentaDto;
+import mx.unam.aragon.zorrito.dto.pedido.HistorialPedidoDto;
 import mx.unam.aragon.zorrito.modelo.CorteInventario;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,7 +16,8 @@ import java.util.List;
 
 @Service
 public class ReporteExcelService {
-    public ByteArrayInputStream generarReporte(List<CorteInventario> cortes, List<HistorialVentaDto> historial) throws IOException {
+    public ByteArrayInputStream generarReporte(List<CorteInventario> cortes, List<HistorialVentaDto> historialVentas, List<HistorialPedidoDto> historialPedidos) throws IOException
+    {
         try (Workbook workbook = new XSSFWorkbook()) {
             // Hoja 1: Lista Corte
             Sheet hojaCorte = workbook.createSheet("Lista Corte");
@@ -44,7 +46,7 @@ public class ReporteExcelService {
             encabezadoVentas.createCell(4).setCellValue("Total");
 
             int rowVenta = 1;
-            for (HistorialVentaDto venta : historial) {
+            for (HistorialVentaDto venta : historialVentas) {
                 Row fila = hojaVentas.createRow(rowVenta++);
                 fila.createCell(0).setCellValue(venta.getNombreCajero());
                 fila.createCell(1).setCellValue(venta.getNombreCliente());
@@ -52,6 +54,22 @@ public class ReporteExcelService {
                 fila.createCell(3).setCellValue(String.join(", ", venta.getProductosYcantidades()));
                 fila.createCell(4).setCellValue(venta.getTotalPagado());
             }
+
+            // Hoja 3: Historial de pedidos a distribuidores
+            Sheet hojaPedidos = workbook.createSheet("Historial Pedidos");
+            Row encabezadoPedidos = hojaPedidos.createRow(0);
+            encabezadoPedidos.createCell(0).setCellValue("Distribuidor");
+            encabezadoPedidos.createCell(1).setCellValue("Fecha");
+            encabezadoPedidos.createCell(2).setCellValue("Productos y Cantidades");
+
+            int rowPedido = 1;
+            for (HistorialPedidoDto pedido : historialPedidos) {
+                Row fila = hojaPedidos.createRow(rowPedido++);
+                fila.createCell(0).setCellValue(pedido.getNombreProveedor());
+                fila.createCell(1).setCellValue(pedido.getFecha().toString());
+                fila.createCell(2).setCellValue(String.join(", ", pedido.getProductosYcantidades()));
+            }
+
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             workbook.write(out);
