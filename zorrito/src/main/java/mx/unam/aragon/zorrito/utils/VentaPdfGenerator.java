@@ -15,9 +15,7 @@ import java.util.List;
 public class VentaPdfGenerator {
 
     public static ByteArrayInputStream generarPdf(Venta venta, List<ItemVentaDto> items, String clienteNombre, String metodoPago, double total) {
-
-
-
+        
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 

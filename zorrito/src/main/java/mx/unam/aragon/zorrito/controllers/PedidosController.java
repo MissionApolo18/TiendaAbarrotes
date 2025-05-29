@@ -1,113 +1,133 @@
 package mx.unam.aragon.zorrito.controllers;
 
-import jakarta.validation.Valid;
-import mx.unam.aragon.zorrito.modelo.DetallePedidoDistribuidor;
-import mx.unam.aragon.zorrito.modelo.PedidoDistribuidor;
-import mx.unam.aragon.zorrito.modelo.Producto;
-import mx.unam.aragon.zorrito.service.DetallePedidoDis.DetallePedidoDistribuidorService;
-import mx.unam.aragon.zorrito.service.MetodoPago.MetodoPagoService;
+import mx.unam.aragon.zorrito.dto.ItemPedidoDto;
+import mx.unam.aragon.zorrito.dto.PedidoDto;
+import mx.unam.aragon.zorrito.modelo.*;
+import mx.unam.aragon.zorrito.service.Distribuidor.DistribuidorService;
 import mx.unam.aragon.zorrito.service.PedidoDistribuidor.PedidoDisService;
+import mx.unam.aragon.zorrito.service.DetallePedidoDis.DetallePedidoDistribuidorService;
 import mx.unam.aragon.zorrito.service.Producto.ProductoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mx.unam.aragon.zorrito.service.Usuario.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
 
+@Controller
+@RequestMapping("/pedidos")
 public class PedidosController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DistribuidorController.class);
-	
 	@Autowired
-	private PedidoDisService pedidoService;
-	
-	@Autowired
-	private DetallePedidoDistribuidorService detalleService;
+	private DistribuidorService distribuidorService;
 	
 	@Autowired
 	private ProductoService productoService;
 	
 	@Autowired
-	private MetodoPagoService metodoPagoService;
+	private PedidoDisService pedidoService;
 	
-	@GetMapping("/pedidos/nuevo")
-	public String nuevoPedido(Model model) {
-		model.addAttribute("pedidoDto", new PedidoDistribuidor());
+	@Autowired
+	private DetallePedidoDistribuidorService detallePedidoService;
+	
+	@Autowired
+	private UsuariosService usuariosService;
+	
+	@GetMapping("/realizar_pedido")
+	public String mostrarFormularioPedido(Model model) {
+		model.addAttribute("pedidoDto", new PedidoDto());
+		model.addAttribute("distribuidores", distribuidorService.findAll());
 		model.addAttribute("productos", productoService.findAll());
-		model.addAttribute("metodosPago", metodoPagoService.findAll());
-		return "/pedido/formulario-pedido";
-	}
-	
-	@PostMapping("/pedidos/guardar")
-	public String guardarPedido(@Valid @ModelAttribute("pedidoDto") PedidoDistribuidor pedido,
-								BindingResult result,
-								@RequestParam("total") double total,
-								@RequestParam Map<String, String> allParams,
-								Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("productos", productoService.findAll());
-			model.addAttribute("metodosPago", metodoPagoService.findAll());
-			return "/pedido/formulario-pedido";
-		}
-		
-		pedidoService.save(pedido);
-		
-		int i = 0;
-		while (allParams.containsKey("items[" + i + "].idProducto")) {
-			try {
-				Long idProducto = Long.parseLong(allParams.get("items[" + i + "].idProducto"));
-				int cantidad = Integer.parseInt(allParams.get("items[" + i + "].cantidad"));
-				double precioUnitario = Double.parseDouble(allParams.get("items[" + i + "].precioUnitario"));
-				
-				Producto producto = productoService.findById(idProducto);
-				if (producto == null) {
-					logger.warn("Producto con id {} no encontrado", idProducto);
-					i++;
-					continue;
-				}
-				
-				DetallePedidoDistribuidor detalle = new DetallePedidoDistribuidor();
-				detalle.setIdpedidoDis(pedido);
-				detalle.setIdProductoDist(producto);
-				detalle.setCantidad(cantidad);
-				detalle.setPrecioUnitario(precioUnitario);
-				
-				detalleService.save(detalle);
-			} catch (Exception e) {
-				logger.error("Error procesando detalle del producto: {}", e.getMessage());
+		model.addAttribute("iddetalle", new DetallePedidoDistribuidorService() {
+			@Override
+			public DetallePedidoDistribuidor save(DetallePedidoDistribuidor detallePedido) {
+				return null;
 			}
-			i++;
-		}
-		
-		return "redirect:/distribuidor/listar";
+			
+			@Override
+			public List<DetallePedidoDistribuidor> findAll() {
+				return List.of();
+			}
+			
+			@Override
+			public void deleteById(Long id) {
+			
+			}
+			
+			@Override
+			public DetallePedidoDistribuidor findById(Long id) {
+				return null;
+			}
+			
+			@Override
+			public boolean existsByPedidoAndProducto(PedidoDistribuidor pedido, Producto producto) {
+				return false;
+			}
+		});
+		return "/pedidos/realizar-pedido";
 	}
 	
-	@GetMapping("/pedidos/anadir-producto")
-	public String anadirProductoAPedido(@RequestParam("pedidoId") Long pedidoId,
-										@RequestParam("productoId") Long productoId) {
-		PedidoDistribuidor pedido = pedidoService.findById(pedidoId);
-		Producto producto = productoService.findById(productoId);
+	@PostMapping("/guardar")
+	public String guardarPedido(@ModelAttribute("pedidoDto") PedidoDto pedidoDto, RedirectAttributes redirectAttributes) {
+		// Obtener usuario autenticado
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Usuarios usuario = usuariosService.findByUsername(username);
 		
-		if (pedido == null || producto == null) {
-			return "redirect:/producto/listar_bajo_stock?pedidoId=" + pedidoId;
+		// Buscar distribuidor por ID desde el DTO
+		Distribuidor distribuidor = distribuidorService.findById(pedidoDto.getIddetalle());
+		if (distribuidor == null) {
+			redirectAttributes.addFlashAttribute("error", "❌ No se encontró un distribuidor con ese Id.");
+			return "redirect:/pedidos/realizar_pedido";
 		}
 		
-		boolean yaExiste = detalleService.existsByPedidoAndProducto(pedido, producto);
-		if (!yaExiste) {
-			DetallePedidoDistribuidor detalle = new DetallePedidoDistribuidor();
-			detalle.setIdpedidoDis(pedido);
-			detalle.setIdProductoDist(producto);
-			detalle.setCantidad(50); // Idealmente configurable
-			detalle.setPrecioUnitario(producto.getPrecioProducto());
-			detalleService.save(detalle);
+		// Crear y guardar el pedido principal
+		PedidoDistribuidor pedido = new PedidoDistribuidor();
+		pedido.setIdDistribuidor(distribuidor);
+		pedido.setFecha(new Date());
+		PedidoDistribuidor pedidoGuardado = pedidoService.save(pedido);
+		
+		// Verificar si hay ítems de pedido
+		if (pedidoDto.getItems() != null && !pedidoDto.getItems().isEmpty()) {
+			for (ItemPedidoDto item : pedidoDto.getItems()) {
+				Producto producto = productoService.findById(item.getIdProducto());
+				
+				if (producto != null) {
+					// Actualizar stock del producto
+					int nuevoStock = producto.getStockProducto() + item.getCantidad();
+					producto.setStockProducto(nuevoStock);
+					productoService.save(producto);
+					
+					// Crear y guardar el detalle del pedido
+					DetallePedidoDistribuidor detalle = new DetallePedidoDistribuidor();
+					detalle.setIdpedidoDis(pedidoGuardado);
+					detalle.setIdProductoDist(producto);
+					detalle.setCantidad(item.getCantidad());
+					detalle.setPrecioUnitario(item.getPrecioUnitario());
+					
+					detallePedidoService.save(detalle);
+				} else {
+					System.out.println("⚠️ Producto no encontrado con ID: " + item.getIdProducto());
+				}
+			}
+		} else {
+			System.out.println("⚠️ Advertencia: No se proporcionaron detalles del pedido");
 		}
 		
-		return "redirect:/producto/listar_bajo_stock?pedidoId=" + pedidoId;
+		redirectAttributes.addFlashAttribute("mensaje", "✅ Pedido registrado exitosamente.");
+		return "redirect:/pedidos/listar_pedidos";
+	}
+	
+	
+	@GetMapping("/listar_pedidos")
+	public String listarPedidos(Model model) {
+		List<PedidoDistribuidor> pedidos = pedidoService.findAll();
+		model.addAttribute("pedidos", pedidos);
+		return "/pedidos/lista-pedidos";
 	}
 }

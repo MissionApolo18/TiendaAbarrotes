@@ -38,9 +38,4 @@ public class Venta {
 	@OneToMany(mappedBy = "ventas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<DetalleVenta> detalleVentas;
 	
-	
-	// Relación bidireccional con DetalleVenta
-	@OneToMany(mappedBy = "ventas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<DetalleVenta> detalleVentas;
-	
 }

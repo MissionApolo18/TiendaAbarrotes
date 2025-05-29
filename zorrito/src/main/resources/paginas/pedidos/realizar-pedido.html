@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulario de Pedido</title>
-    <link rel="stylesheet" th:href="@{/css/estilo.css}" /> <!-- Ruta dinámica correcta -->
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
 </head>
 <body>
 
-<!-- Barra de navegación -->
-<div th:replace="plantillas/navbar :: navegacion-seccion"></div>
+<!-- Navbar -->
+<div th:replace="~{plantillas/navbar :: navegacion-seccion}"></div>
 
 <div class="container">
     <div class="text-center" style="margin:30px">
-        <h3>Pedido a Distribuidor</h3>
+        <h2>Pedido a Distribuidor</h2>
     </div>
 
-    <form th:action="@{/realizar_pedido/guardar}" th:object="${pedidoDto}" onsubmit="return validarFormulario()" method="post">
+    <form th:action="@{/pedidos/guardar}" th:object="${pedido}" onsubmit="return validarFormulario()" method="post">
 
         <div th:if="${mensaje}" class="alert alert-success mt-3" role="alert">
             <p th:text="${mensaje}"></p>
@@ -23,11 +23,16 @@
 
         <!-- Distribuidor -->
         <div class="mb-3">
-            <label for="nombreDistribuidor" class="form-label">Nombre del Distribuidor:</label>
-            <input type="text" id="nombreDistribuidor" th:field="${nombreDistribuidor}" class="form-control" required />
+            <label for="idDistribuidor" class="form-label">Distribuidor:</label>
+            <select id="idDistribuidor" th:field="*{idDistribuidor}" class="form-select" required>
+                <option value="">--Seleccione Distribuidor--</option>
+                <option th:each="dist : ${distribuidores}"
+                        th:value="${dist.idDistribuidor}"
+                        th:text="${dist.nombreDistribuidor}"></option>
+            </select>
         </div>
 
-        <!-- Productos -->
+        <!-- Producto -->
         <div class="mb-3">
             <label for="producto" class="form-label">Producto</label>
             <select id="producto" class="form-select" required>
@@ -41,6 +46,7 @@
             </select>
         </div>
 
+        <!-- Cantidad -->
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" id="cantidad" min="1" step="1" value="1" class="form-control" required />
@@ -48,7 +54,7 @@
 
         <button type="button" id="agregarProducto" class="btn btn-primary mt-2">Agregar al Pedido</button>
 
-        <!-- Tabla del pedido -->
+        <!-- Tabla -->
         <table class="table mt-3" id="tablaCarrito">
             <thead>
             <tr>
@@ -60,7 +66,7 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Filas dinámicas aquí -->
+            <!-- Dinámico -->
             </tbody>
         </table>
 
@@ -72,14 +78,14 @@
         <!-- Forma de pago -->
         <div class="mb-3">
             <label for="metodoPago" class="form-label">Condición de pago</label>
-            <select id="metodoPago" th:field="${idMetodoPago}" class="form-select" required>
+            <select id="metodoPago" th:field="*{idMetodoPago}" class="form-select" required>
                 <option value="">--Seleccione condición--</option>
                 <option th:each="mp : ${metodosPago}" th:value="${mp.idMetodo}" th:text="${mp.descripcion}"></option>
             </select>
         </div>
 
         <!-- Campos ocultos -->
-        <input type="hidden" id="totalInput" th:field="${total}" />
+        <input type="hidden" id="totalInput" th:field="*{total}" />
         <div id="carritoInputs"></div>
 
         <button type="submit" class="btn btn-success mt-3">Enviar Pedido</button>
@@ -87,9 +93,9 @@
 </div>
 
 <!-- Footer -->
-<div th:replace="plantillas/footer :: pie-pagina-seccion"></div>
+<div th:replace="~{plantillas/footer :: pie-pagina-seccion}"></div>
 
-<!-- JS -->
+<!-- Scripts -->
 <script>
     const productoSelect = document.getElementById("producto");
     const cantidadInput = document.getElementById("cantidad");
@@ -152,7 +158,6 @@
         document.getElementById("totalInput").value = total.toFixed(2);
 
         carritoInputs.innerHTML = "";
-
         carrito.forEach((item, index) => {
             carritoInputs.innerHTML += `
                 <input type="hidden" name="items[${index}].idProducto" value="${item.idProducto}" />
@@ -188,55 +193,41 @@
         background-color: #fbe7d9;
         padding: 20px;
     }
-
-    /* Navbar */
     .navbar {
         background-color: #BD280CFF !important;
         border-radius: 10px;
     }
-
-    .navbar-brand,
-    .nav-link {
+    .navbar-brand, .nav-link {
         color: #fbe7d9 !important;
         transition: color 0.3s ease;
     }
-
     .nav-link.active {
         border-bottom: 2px solid #FFD700;
     }
-
     .nav-link:hover {
         color: #FFD700 !important;
     }
-
     .dropdown-menu {
         background-color: #fbe7d9;
         border: 1px solid #ccc;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-
     .dropdown-item {
         color: #333333 !important;
     }
-
     .dropdown-item:hover {
         background-color: #f7cbb1;
     }
-
-    /* Buttons */
-    .btn-custom {
+    .btn {
         background-color: #ec330a;
         color: #fbe7d9;
         border: none;
         border-radius: 5px;
         transition: background-color 0.3s ease;
     }
-
-    .btn-custom:hover {
+    .btn:hover {
         background-color: #9b1d11;
     }
-
-    /* Forms */
     .form-container {
         display: flex;
         flex-direction: column;
@@ -249,63 +240,10 @@
         margin: 20px auto;
         color: #333333;
     }
-
-    .form-container label {
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .form-container input {
-        margin-bottom: 15px;
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
         padding: 10px;
-        width: 100%;
-        border: 1px solid #fbe7d9;
         border-radius: 5px;
     }
-
-    /* Cards */
-    .card {
-        background-color: #9b1d11;
-        color: #fbe7d9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-title {
-        color: #FFD700;
-    }
-
-    .card img {
-        border-radius: 10px;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        margin-bottom: 10px;
-    }
-
-    /* Footer */
-    footer {
-        text-align: center;
-        margin-top: 20px;
-        color: #fbe7d9;
-        font-size: 14px;
-    }
-
-    /* Header */
-    header a {
-        text-decoration: none;
-        color: #c4220a;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    header a:hover {
-        text-decoration: underline;
-    }
-
 </style>
