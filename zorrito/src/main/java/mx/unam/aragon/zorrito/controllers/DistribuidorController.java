@@ -27,23 +27,8 @@ import java.util.Map;
 @RequestMapping("/distribuidor")
 public class DistribuidorController {
     
-    private static final Logger logger = LoggerFactory.getLogger(DistribuidorController.class);
-    
     @Autowired
     private DistribuidorService distribuidorService;
-    
-    @Autowired
-    private PedidoDisService pedidoService;
-    
-    @Autowired
-    private DetallePedidoDistribuidorService detalleService;
-    
-    @Autowired
-    private ProductoService productoService;
-    
-    @Autowired
-    private MetodoPagoService metodoPagoService;
-    
     
     @GetMapping("/nuevo")
     public String mostrarFormularioDistribuidor(Model model) {
@@ -89,80 +74,4 @@ public class DistribuidorController {
         return "redirect:/distribuidor/listar";
     }
     
-    //Pedidos
-    
-    @GetMapping("/pedidos/nuevo")
-    public String nuevoPedido(Model model) {
-        model.addAttribute("pedidoDto", new PedidoDistribuidor());
-        model.addAttribute("productos", productoService.findAll());
-        model.addAttribute("metodosPago", metodoPagoService.findAll());
-        return "/pedido/formulario-pedido";
-    }
-    
-    @PostMapping("/pedidos/guardar")
-    public String guardarPedido(@Valid @ModelAttribute("pedidoDto") PedidoDistribuidor pedido,
-                                BindingResult result,
-                                @RequestParam("total") double total,
-                                @RequestParam Map<String, String> allParams,
-                                Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("productos", productoService.findAll());
-            model.addAttribute("metodosPago", metodoPagoService.findAll());
-            return "/pedido/formulario-pedido";
-        }
-        
-        pedidoService.save(pedido);
-        
-        int i = 0;
-        while (allParams.containsKey("items[" + i + "].idProducto")) {
-            try {
-                Long idProducto = Long.parseLong(allParams.get("items[" + i + "].idProducto"));
-                int cantidad = Integer.parseInt(allParams.get("items[" + i + "].cantidad"));
-                double precioUnitario = Double.parseDouble(allParams.get("items[" + i + "].precioUnitario"));
-                
-                Producto producto = productoService.findById(idProducto);
-                if (producto == null) {
-                    logger.warn("Producto con id {} no encontrado", idProducto);
-                    i++;
-                    continue;
-                }
-                
-                DetallePedidoDistribuidor detalle = new DetallePedidoDistribuidor();
-                detalle.setIdpedidoDis(pedido);
-                detalle.setIdProductoDist(producto);
-                detalle.setCantidad(cantidad);
-                detalle.setPrecioUnitario(precioUnitario);
-                
-                detalleService.save(detalle);
-            } catch (Exception e) {
-                logger.error("Error procesando detalle del producto: {}", e.getMessage());
-            }
-            i++;
-        }
-        
-        return "redirect:/distribuidor/listar";
-    }
-    
-    @GetMapping("/pedidos/anadir-producto")
-    public String anadirProductoAPedido(@RequestParam("pedidoId") Long pedidoId,
-                                        @RequestParam("productoId") Long productoId) {
-        PedidoDistribuidor pedido = pedidoService.findById(pedidoId);
-        Producto producto = productoService.findById(productoId);
-        
-        if (pedido == null || producto == null) {
-            return "redirect:/producto/listar_bajo_stock?pedidoId=" + pedidoId;
-        }
-        
-        boolean yaExiste = detalleService.existsByPedidoAndProducto(pedido, producto);
-        if (!yaExiste) {
-            DetallePedidoDistribuidor detalle = new DetallePedidoDistribuidor();
-            detalle.setIdpedidoDis(pedido);
-            detalle.setIdProductoDist(producto);
-            detalle.setCantidad(50); // Idealmente configurable
-            detalle.setPrecioUnitario(producto.getPrecioProducto());
-            detalleService.save(detalle);
-        }
-        
-        return "redirect:/producto/listar_bajo_stock?pedidoId=" + pedidoId;
-    }
 }
