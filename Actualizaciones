@@ -26,3 +26,10 @@ Hay avances considerables, podemos realizar ventas en el sistema, dependiendo el
 El objetivo trazado del dia de hoy es generar los reportes excel de historial de ventas y generar los pdfs de cada venta.
 
 La actualizacion se encuentra en la rama Arturo 
+
+--27 de may del 2025 19:07
+Agregamos alerta de contrasenia incorrecta en el login, despues generamos la vista del corte de inventario y en realizar venta ahora buscamos el cliente mediante su telefono celular
+
+-- 28 de may del 2025 12:42
+Mejoramos la seguridad de las rutas dependiendo el rol del usuario autenticado, tambien ya generamos los reportes de excel, en un excel traemos el corte de inventario e historial de ventas 
+tuvimos que modificar la entity de ventas, asi como su service y su repository, tambien en corte de inventario para poder usarlos en el service de excel que creamos, asi como el endpoint para generar un excel

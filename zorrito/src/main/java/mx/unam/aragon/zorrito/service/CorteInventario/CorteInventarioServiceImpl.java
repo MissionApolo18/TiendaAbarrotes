@@ -37,7 +37,7 @@ public class CorteInventarioServiceImpl implements CorteInventarioService {
         Optional<CorteInventario> op = corteInventarioRepository.findById(id);
         return op.orElse(null);
     }
-    
+
     public List<CorteInventario> obtenerListaCorte() {
         return corteInventarioRepository.findAll();
     }

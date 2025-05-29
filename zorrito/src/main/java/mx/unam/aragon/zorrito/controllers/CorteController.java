@@ -14,15 +14,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/corte")
 public class CorteController {
-	
-	@Autowired
-	private CorteInventarioService corteInventarioService;
-	
-	@GetMapping("/listar_cortes")
-	public String mostrarCorte(Model model){
-		List<CorteInventario> cortes = corteInventarioService.findAll();
-		model.addAttribute("cortes", cortes);
-		model.addAttribute("contenido", "Historial de Inventario");
-		return "/corte/lista-corte";
-	}
+
+    @Autowired
+    private CorteInventarioService corteInventarioService;
+
+    @GetMapping("/listar_cortes")
+    public String mostrarCorte(Model model){
+        List<CorteInventario> cortes = corteInventarioService.findAll();
+        model.addAttribute("cortes", cortes);
+        model.addAttribute("contenido", "Historial de Inventario");
+        return "/corte/lista-corte";
+    }
 }

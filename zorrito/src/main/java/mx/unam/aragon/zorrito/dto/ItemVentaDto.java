@@ -13,4 +13,5 @@ public class ItemVentaDto {
     private Long idProducto;
     private Integer cantidad;
     private Double precioUnitario;
+    private String nombreProducto;
 }

@@ -13,16 +13,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     @Autowired
     private CustomUserDetailsService userDetailsService;
-    
+
     // 1) El PasswordEncoder que usarás para comparar la contraseña encriptada
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     // 2) El proveedor de autenticación que usará tu UserDetailsService
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -31,13 +31,13 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-    
+
     // 3) La configuración de seguridad HTTP
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authenticationProvider(authenticationProvider())
-                
+
                 .authorizeHttpRequests(auth -> auth
                         // Rutas para el ADMIN:
                         .requestMatchers(
@@ -59,27 +59,28 @@ public class SecurityConfig {
                         // Todo lo demás requiere autenticación:
                         .anyRequest().authenticated()
                 )
-                
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/index", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 )
-                
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                
+
                 // 👇 Esto redirige a /index si el usuario intenta acceder a algo sin permiso
                 .exceptionHandling(exception ->
                         exception.accessDeniedPage("/index")
                 );
-        
+
         return http.build();
     }
-    
+
 }
+
 

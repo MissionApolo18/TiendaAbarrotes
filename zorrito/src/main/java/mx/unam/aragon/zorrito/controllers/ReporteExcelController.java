@@ -21,30 +21,30 @@ import java.util.List;
 @Controller
 @RequestMapping("/reporte")
 public class ReporteExcelController {
-	@Autowired
-	private ReporteExcelService reporteExcelService;
-	
-	@Autowired
-	private CorteInventarioService corteInventarioService;
-	
-	@Autowired
-	private VentaService ventaService;
-	
-	
-	@GetMapping("/excel")
-	public ResponseEntity<InputStreamResource> descargarReporteExcel() throws IOException {
-		List<CorteInventario> listaCorte = corteInventarioService.obtenerListaCorte();
-		List<HistorialVentaDto> historial = ventaService.obtenerHistorialVentas();
-		
-		ByteArrayInputStream in = reporteExcelService.generarReporte(listaCorte, historial);
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "attachment; filename=reporte_inventario_ventas.xlsx");
-		
-		return ResponseEntity
-				.ok()
-				.headers(headers)
-				.contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-				.body(new InputStreamResource(in));
-	}
+    @Autowired
+    private ReporteExcelService reporteExcelService;
+
+    @Autowired
+    private CorteInventarioService corteInventarioService;
+
+    @Autowired
+    private VentaService ventaService;
+
+
+    @GetMapping("/excel")
+    public ResponseEntity<InputStreamResource> descargarReporteExcel() throws IOException {
+        List<CorteInventario> listaCorte = corteInventarioService.obtenerListaCorte();
+        List<HistorialVentaDto> historial = ventaService.obtenerHistorialVentas();
+
+        ByteArrayInputStream in = reporteExcelService.generarReporte(listaCorte, historial);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=reporte_inventario_ventas.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(in));
+    }
 }

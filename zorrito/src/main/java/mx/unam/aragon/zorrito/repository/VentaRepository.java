@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface VentaRepository extends JpaRepository<Venta, Long> {
-	
-	@Query("SELECT DISTINCT v FROM venta v JOIN FETCH v.detalleVentas d JOIN FETCH d.productos")
-	List<Venta> obtenerVentasConDetalles();
-	
+
+    @Query("SELECT DISTINCT v FROM venta v JOIN FETCH v.detalleVentas d JOIN FETCH d.productos")
+    List<Venta> obtenerVentasConDetalles();
+
 }
