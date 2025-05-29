@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Long> {
     List<DetalleVenta> findByVentas(Venta venta);
+    List<DetalleVenta> findByVentas_IdVenta(Long idVenta);
 }

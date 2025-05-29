@@ -1,6 +1,7 @@
 package mx.unam.aragon.zorrito.controllers;
 
 import mx.unam.aragon.zorrito.dto.HistorialVentaDto;
+import mx.unam.aragon.zorrito.dto.ItemVentaDto;
 import mx.unam.aragon.zorrito.dto.VentaDto;
 import mx.unam.aragon.zorrito.modelo.*;
 
@@ -12,7 +13,11 @@ import mx.unam.aragon.zorrito.service.Pago.PagoService;
 import mx.unam.aragon.zorrito.service.Producto.ProductoService;
 import mx.unam.aragon.zorrito.service.Usuario.UsuariosService;
 import mx.unam.aragon.zorrito.service.Venta.VentaService;
+import mx.unam.aragon.zorrito.utils.VentaPdfGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -132,8 +138,38 @@ public class VentaController {
 
         // Mensaje para mostrar en la vista
         redirectAttributes.addFlashAttribute("mensaje", "✅ Venta registrada exitosamente.");
-        return "redirect:/venta/agregar_venta";
+        //return "redirect:/venta/agregar_venta";
+        redirectAttributes.addFlashAttribute("idVenta", ventaGuardada.getIdVenta());
+        return "redirect:/venta/pdf/" + ventaGuardada.getIdVenta();
     }
+    
+    // metodo para el pdf
+    @GetMapping("/pdf/{id}")
+    public ResponseEntity<byte[]> generarPdfVenta(@PathVariable("id") Long idVenta) {
+        Venta venta = ventaService.findById(idVenta);
+        List<ItemVentaDto> items = detalleVentaService.obtenerItemsDeVenta(idVenta); // debes crear este método
+        String clienteNombre = venta.getIdClienteVenta().getNombreCliente();
+        String metodoPago = pagoService.findByIdVenta(idVenta).getIdMethod().getDescripcion();
+        double total = pagoService.findByIdVenta(idVenta).getTotalPagado();
+
+        ByteArrayInputStream pdfStream = VentaPdfGenerator.generarPdf(venta, items, clienteNombre, metodoPago, total);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=venta_" + idVenta + ".pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfStream.readAllBytes());
+    }
+
+    @GetMapping("/descarga-pdf")
+    public String descargaPdf(Model model) {
+        // idVenta ya está en el modelo por FlashAttributes
+        return "/venta/descarga-pdf";
+    }
+
 
     @GetMapping("/listar_venta")
     public String histrialVentas(Model model){

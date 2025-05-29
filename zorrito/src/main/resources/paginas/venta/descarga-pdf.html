@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Descargando PDF...</title>
+</head>
+<body>
+<p>Generando PDF...</p>
+<script>
+    const idVenta = /*[[${idVenta}]]*/ '0'; // Thymeleaf sustituye aquí el idVenta
+    // Abre el PDF en nueva pestaña para que el usuario pueda descargarlo
+    window.open('/venta/pdf/' + idVenta, '_blank');
+    // Luego redirige a la página principal o historial
+    setTimeout(() => {
+        window.location.href = '/venta/agregar_venta'; // o la página que quieras
+    }, 2000);
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@ public class DetalleVenta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_detalle")
-	private long idDetalleVenta;
+	private Long idDetalleVenta;
 	
 	@JoinColumn(name = "id_venta", referencedColumnName = "id_venta")
 	@ManyToOne
