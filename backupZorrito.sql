@@ -42,7 +42,7 @@ LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
 INSERT INTO `cliente` VALUES
 (1,'Jorge Luis','jorge12@gmail.com','5523247886'),
-(2,'Atenea Marta','MartaChulada@gmail.com','5598456734'),
+(2,'Atenea Marta','anthonygutierrez16000@gmail.com','5598456734'),
 (3,'Ana Cecilia','ana123@gmail.com','5514230987'),
 (5,'Bergolio','papadeath@yahoo.com','5567452312'),
 (8,'Andrea Moreira','makotoalfaro15122019@gmail.com','5554789636'),
@@ -67,7 +67,7 @@ CREATE TABLE `corte_inventario` (
   PRIMARY KEY (`id_corte`),
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `corte_inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,12 @@ INSERT INTO `corte_inventario` VALUES
 (23,'2025-05-28','fin',2,969),
 (24,'2025-05-28','fin',13,360),
 (25,'2025-05-28','fin',10,135),
-(26,'2025-05-28','fin',11,98);
+(26,'2025-05-28','fin',11,98),
+(27,'2025-05-29','fin',13,358),
+(28,'2025-05-29','fin',11,78),
+(29,'2025-05-29','fin',12,37),
+(30,'2025-05-29','fin',10,75),
+(31,'2025-05-29','inicio',14,1000);
 /*!40000 ALTER TABLE `corte_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +129,7 @@ CREATE TABLE `detalle_pedido_distribuidor` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_pedido_distribuidor_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido_distribuidor` (`id_pedido`),
   CONSTRAINT `detalle_pedido_distribuidor_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,6 +138,15 @@ CREATE TABLE `detalle_pedido_distribuidor` (
 
 LOCK TABLES `detalle_pedido_distribuidor` WRITE;
 /*!40000 ALTER TABLE `detalle_pedido_distribuidor` DISABLE KEYS */;
+INSERT INTO `detalle_pedido_distribuidor` VALUES
+(1,1,13,1,200.00),
+(2,2,10,1,0.00),
+(3,3,2,2,0.00),
+(4,4,13,1,0.00),
+(5,5,13,20,0.00),
+(6,6,13,20,0.00),
+(7,7,14,100,0.00),
+(8,7,13,200,0.00);
 /*!40000 ALTER TABLE `detalle_pedido_distribuidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +168,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +203,11 @@ INSERT INTO `detalle_venta` VALUES
 (28,21,2,10,30.00),
 (29,22,13,40,200.00),
 (30,22,10,12,56.00),
-(31,22,11,100,20.00);
+(31,22,11,100,20.00),
+(32,23,13,1,200.00),
+(33,24,11,20,20.00),
+(34,24,12,100,40.00),
+(35,24,10,60,56.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +237,7 @@ INSERT INTO `distribuidor` VALUES
 (2,'Súper Alimentos MX','ventas@superalimentos.mx'),
 (3,'Refrescos del Norte','norte@gmail.com'),
 (6,'FoodRapi','rapi03@yahoo.com'),
-(7,'Croquetas Mex','croquetas@gmail.com');
+(7,'Croquetas Mex','arturovazros@gmail.com');
 /*!40000 ALTER TABLE `distribuidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +285,7 @@ CREATE TABLE `pago` (
   KEY `id_metodo` (`id_metodo`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +310,9 @@ INSERT INTO `pago` VALUES
 (16,19,1,1408.00),
 (17,20,1,76.00),
 (18,21,1,1249.60),
-(19,22,1,9331.36);
+(19,22,1,9331.36),
+(20,23,2,200.00),
+(21,24,1,6708.80);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,7 +330,7 @@ CREATE TABLE `pedido_distribuidor` (
   PRIMARY KEY (`id_pedido`),
   KEY `id_distribuidor` (`id_distribuidor`),
   CONSTRAINT `pedido_distribuidor_ibfk_1` FOREIGN KEY (`id_distribuidor`) REFERENCES `distribuidor` (`id_distribuidor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,6 +339,14 @@ CREATE TABLE `pedido_distribuidor` (
 
 LOCK TABLES `pedido_distribuidor` WRITE;
 /*!40000 ALTER TABLE `pedido_distribuidor` DISABLE KEYS */;
+INSERT INTO `pedido_distribuidor` VALUES
+(1,7,'2025-05-29 12:36:50'),
+(2,2,'2025-05-29 00:00:00'),
+(3,6,'2025-05-29 00:00:00'),
+(4,7,'2025-05-29 00:00:00'),
+(5,7,'2025-05-29 00:00:00'),
+(6,7,'2025-05-29 00:00:00'),
+(7,7,'2025-05-29 00:00:00');
 /*!40000 ALTER TABLE `pedido_distribuidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,7 +367,7 @@ CREATE TABLE `producto` (
   PRIMARY KEY (`id_producto`),
   KEY `id_distribuidor` (`id_distribuidor`),
   CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_distribuidor`) REFERENCES `distribuidor` (`id_distribuidor`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,10 +378,11 @@ LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` VALUES
 (2,'Coca Cola 1L',30.00,969,3,NULL),
-(10,'Helado Vainilla',56.00,135,2,NULL),
-(11,'Pepsi Dieta 600ml',20.00,98,3,NULL),
-(12,'Pizza Congelada',40.00,137,6,NULL),
-(13,'Costal Croquetas Dog',200.00,360,7,NULL);
+(10,'Helado Vainilla',56.00,75,2,NULL),
+(11,'Pepsi Dieta 600ml',20.00,78,3,NULL),
+(12,'Pizza Congelada',40.00,37,6,NULL),
+(13,'Costal Croquetas Dog',200.00,358,7,NULL),
+(14,'Croquetas Gato ',200.00,1000,7,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,7 +493,7 @@ CREATE TABLE `venta` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -489,7 +518,9 @@ INSERT INTO `venta` VALUES
 (19,8,2,'2025-05-28 19:06:06',0.00),
 (20,11,2,'2025-05-28 22:08:03',0.00),
 (21,12,2,'2025-05-28 22:11:45',0.00),
-(22,8,3,'2025-05-28 22:15:55',0.00);
+(22,8,3,'2025-05-28 22:15:55',0.00),
+(23,11,2,'2025-05-29 12:45:10',0.00),
+(24,2,2,'2025-05-29 15:39:05',0.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -502,4 +533,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-28 22:17:33
+-- Dump completed on 2025-05-29 16:08:55
