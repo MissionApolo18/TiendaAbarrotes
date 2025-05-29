@@ -13,4 +13,5 @@ public interface ClienteService {
 
     Cliente findById(Long id);
     Cliente findByTelefono(String telefono);
+    Cliente findByCorreoCliente(String correoCliente);
 }

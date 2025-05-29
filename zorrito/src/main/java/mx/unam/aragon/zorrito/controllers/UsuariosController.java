@@ -68,7 +68,7 @@ public class UsuariosController {
 
         usuariosService.save(usuarios);
         model.addAttribute("contenido","Se almaceno con exito");
-        return "/usuario/agregar-usuario";
+        return "redirect:/usuario/listar_usuario";
     }
 
     @GetMapping("/listar_usuario")
@@ -95,6 +95,6 @@ public class UsuariosController {
     @GetMapping("/eliminar-usuario/{id}")
     public String eliminarUsuario(@PathVariable("id") Long id) {
         usuariosService.deleteById(id);
-        return "redirect:/usuarios/listar_usuario";
+        return "redirect:/usuario/listar_usuario";
     }
 }

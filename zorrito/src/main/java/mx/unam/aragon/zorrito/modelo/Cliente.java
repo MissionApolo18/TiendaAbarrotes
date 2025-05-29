@@ -3,6 +3,7 @@ package mx.unam.aragon.zorrito.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 import mx.unam.aragon.zorrito.validators.correo.CorreoValido;
+import mx.unam.aragon.zorrito.validators.nombre.ValidNombre;
 
 @Entity(name = "cliente")
 @Data
@@ -15,9 +16,10 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cliente")
-	private long idCliente;
+	private Long idCliente;
 	
 	@Column(name = "nombre")
+	//@ValidNombre
 	private String nombreCliente;
 	
 	@Column(name = "correo")

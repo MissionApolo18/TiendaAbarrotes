@@ -34,7 +34,10 @@
                   type="text" id="nombreCliente"
                   th:field="*{nombreCliente}"
                   class="form-control"
-                  placeholder="Nombre del cliente">
+                  placeholder="Nombre del cliente"
+                  pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}"
+                  title="Solo letras, mínimo 2 caracteres"
+                  oninput="this.value = this.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ ]/g, '')">
           <label for="nombreCliente">Nombre del cliente</label>
         </div>
 
@@ -53,12 +56,17 @@
         <div class="form-floating mb-3">
           <input
                   th:classappend="${#fields.hasErrors('telefonoCliente')}? 'is-invalid'"
-                  type="text" id="telefonoCliente"
+                  type="text"
+                  id="telefonoCliente"
                   th:field="*{telefonoCliente}"
                   class="form-control"
-                  placeholder="Teléfono">
+                  placeholder="Teléfono"
+                  pattern="[0-9]{10}"
+                  maxlength="10"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
           <label for="telefonoCliente">Teléfono</label>
         </div>
+
 
       </div>
     </div>

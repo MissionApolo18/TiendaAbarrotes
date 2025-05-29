@@ -2,6 +2,7 @@ package mx.unam.aragon.zorrito.modelo;
 import jakarta.persistence.*;
 import lombok.*;
 import mx.unam.aragon.zorrito.validators.contrasenia.ValidPassword;
+import mx.unam.aragon.zorrito.validators.nombre.ValidNombre;
 import mx.unam.aragon.zorrito.validators.usuario.UniqueUsername;
 
 @Entity(name = "usuarios")
@@ -23,6 +24,7 @@ public class Usuarios {
 	private Rol rolUsuario;
 	
 	@Column(name = "nombre")
+	//@ValidNombre
 	private String nombreUsuario;
 
 	@Column(name = "password")

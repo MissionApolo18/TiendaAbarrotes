@@ -31,7 +31,7 @@ CREATE TABLE `cliente` (
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `correo` (`correo`),
   UNIQUE KEY `telefono` (`telefono`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,9 @@ INSERT INTO `cliente` VALUES
 (2,'Atenea Marta','MartaChulada@gmail.com','5598456734'),
 (3,'Ana Cecilia','ana123@gmail.com','5514230987'),
 (5,'Bergolio','papadeath@yahoo.com','5567452312'),
-(8,'Andrea Moreira','makotoalfaro15122019@gmail.com','5589634525');
+(8,'Andrea Moreira','makotoalfaro15122019@gmail.com','5554789636'),
+(11,'Luis Vazquez','luisyuyots@gmail.com','5524237085'),
+(12,'Norma Rosales','normarosalesleon055@gmail.com','5511366346');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +67,7 @@ CREATE TABLE `corte_inventario` (
   PRIMARY KEY (`id_corte`),
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `corte_inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +94,15 @@ INSERT INTO `corte_inventario` VALUES
 (15,'2025-05-28','fin',10,188),
 (16,'2025-05-28','fin',12,149),
 (17,'2025-05-28','fin',10,168),
-(18,'2025-05-28','fin',12,137);
+(18,'2025-05-28','fin',12,137),
+(19,'2025-05-28','inicio',13,400),
+(20,'2025-05-28','fin',11,198),
+(21,'2025-05-28','fin',10,167),
+(22,'2025-05-28','fin',10,147),
+(23,'2025-05-28','fin',2,969),
+(24,'2025-05-28','fin',13,360),
+(25,'2025-05-28','fin',10,135),
+(26,'2025-05-28','fin',11,98);
 /*!40000 ALTER TABLE `corte_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +154,7 @@ CREATE TABLE `detalle_venta` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +182,14 @@ INSERT INTO `detalle_venta` VALUES
 (21,17,10,1,56.00),
 (22,18,12,1,40.00),
 (23,19,10,20,56.00),
-(24,19,12,12,40.00);
+(24,19,12,12,40.00),
+(25,20,11,1,20.00),
+(26,20,10,1,56.00),
+(27,21,10,20,56.00),
+(28,21,2,10,30.00),
+(29,22,13,40,200.00),
+(30,22,10,12,56.00),
+(31,22,11,100,20.00);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +219,7 @@ INSERT INTO `distribuidor` VALUES
 (2,'Súper Alimentos MX','ventas@superalimentos.mx'),
 (3,'Refrescos del Norte','norte@gmail.com'),
 (6,'FoodRapi','rapi03@yahoo.com'),
-(7,'Croquetas Mexico','croquetas@gmail.com');
+(7,'Croquetas Mex','croquetas@gmail.com');
 /*!40000 ALTER TABLE `distribuidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +267,7 @@ CREATE TABLE `pago` (
   KEY `id_metodo` (`id_metodo`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`),
   CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`id_metodo`) REFERENCES `metodo_pago` (`id_metodo`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +289,10 @@ INSERT INTO `pago` VALUES
 (13,16,1,56.00),
 (14,17,1,56.00),
 (15,18,1,40.00),
-(16,19,1,1408.00);
+(16,19,1,1408.00),
+(17,20,1,76.00),
+(18,21,1,1249.60),
+(19,22,1,9331.36);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,11 +349,11 @@ CREATE TABLE `producto` (
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` VALUES
-(2,'Coca Cola 1L',30.00,979,3,NULL),
-(10,'Helado Vainilla',56.00,168,2,NULL),
-(11,'Pepsi Dieta 600ml',20.00,199,3,NULL),
+(2,'Coca Cola 1L',30.00,969,3,NULL),
+(10,'Helado Vainilla',56.00,135,2,NULL),
+(11,'Pepsi Dieta 600ml',20.00,98,3,NULL),
 (12,'Pizza Congelada',40.00,137,6,NULL),
-(13,'Costal Croquetas Dog Chow',200.00,400,7,NULL);
+(13,'Costal Croquetas Dog',200.00,360,7,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,7 +429,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `username` (`username`),
   KEY `rol` (`rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,9 +441,8 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES
 (1,'Juan Robles','admin1',1,'$2a$10$cccmoCk8Ebu/R6FARn74C.fdZ5LzztIsKklO6XrOrb5ZNL7D6XJj2'),
 (2,'Marcos Luis','cajero1',2,'$2a$10$uBHoIpDYw90AZX9qdy6Av.dsO7KXMoMmPiqEp45jPZyVcap7.7lHm'),
-(3,'Luis Miguel ','cajero2',2,'$2a$10$6SCtlqIX/P8aoD5mgk4Q7OFZwWFhqaou9X/VHMS2HNbbp2ck1R2Le'),
-(4,'Manuel Manu','admin2',1,'$2a$10$lEh1O02pCIGxg0d2w1eTweOb1.2f68sucFWK6hGBCBUenRqkQiVkW'),
-(5,'Eduardo Malvaez','CajeroLalo',2,'$2a$10$kFYE8ykGFR3oBYp8i8LhE.WDiWCcyRBd5YcsAw0cQhLKavUBnOFGG');
+(3,'Luis Miguel ','cajero2',2,'$2a$10$dz5uKV.ub3kt/Q3yY.G/zevrD7/2kaZpMErA8WipfsVYc1ZFTSyGe'),
+(8,'Manuel Manu','ManuAdmin',1,'$2a$10$LAz0jO.n8c9UkPBVW6lwhuM24sK.zInYwwdhM07SPI7k/OnRr5Sla');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -445,7 +464,7 @@ CREATE TABLE `venta` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -467,7 +486,10 @@ INSERT INTO `venta` VALUES
 (16,8,2,'2025-05-28 18:52:38',0.00),
 (17,3,2,'2025-05-28 18:57:57',0.00),
 (18,5,2,'2025-05-28 19:00:06',0.00),
-(19,8,2,'2025-05-28 19:06:06',0.00);
+(19,8,2,'2025-05-28 19:06:06',0.00),
+(20,11,2,'2025-05-28 22:08:03',0.00),
+(21,12,2,'2025-05-28 22:11:45',0.00),
+(22,8,3,'2025-05-28 22:15:55',0.00);
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -480,4 +502,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-28 19:25:12
+-- Dump completed on 2025-05-28 22:17:33

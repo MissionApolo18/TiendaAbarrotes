@@ -34,7 +34,10 @@
                             type="text" id="nombreUsuario"
                             th:field="*{nombreUsuario}"
                             class="form-control"
-                            placeholder="Nombre del distribuidor">
+                            placeholder="Nombre del distribuidor"
+                            pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}"
+                            title="Solo letras, mínimo 2 caracteres"
+                            oninput="this.value = this.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ ]/g, '')">
                     <label for="nombreUsuario">Nombre del Trabajador</label>
                 </div>
 

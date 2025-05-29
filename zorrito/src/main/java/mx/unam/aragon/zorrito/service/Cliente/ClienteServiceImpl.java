@@ -44,4 +44,10 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.findByTelefonoCliente(telefono).orElse(null);
     }
 
+    @Override
+    public Cliente findByCorreoCliente(String correoCliente) {
+        return clienteRepository.findByCorreoCliente(correoCliente).orElse(null);
+    }
+
+
 }

@@ -41,6 +41,24 @@ public class ClienteController {
         if(result.hasErrors()){
             return "/cliente/agregar-cliente";
         }
+
+        // Verifica si ya existe un cliente con ese correo
+        Cliente existente = clienteService.findByTelefono(cliente.getTelefonoCliente());
+        Cliente existeCorreo = clienteService.findByCorreoCliente(cliente.getCorreoCliente());
+        if (existente != null && !existente.getIdCliente().equals(cliente.getIdCliente())) {
+            result.rejectValue("telefonoCliente", "error.cliente", "Ya existe un cliente con ese número telefónico");
+        }
+
+        if (existeCorreo != null && !existeCorreo.getIdCliente().equals(cliente.getIdCliente())) {
+            result.rejectValue("correoCliente", "error.cliente", "Ya existe un cliente con ese correo");
+        }
+
+        if (result.hasErrors()) {
+            return "/cliente/agregar-cliente";
+        }
+
+
+
         clienteService.save(cliente);
         model.addAttribute("contenido","Se almaceno con exito");
         return "/cliente/agregar-cliente";
@@ -68,6 +86,6 @@ public class ClienteController {
     @GetMapping("/eliminar-cliente/{id}")
     public String eliminarCliente(@PathVariable("id") Long id) {
         clienteService.deleteById(id);
-        return "redirect:/cliente/listar_cliente"; // importante usar redirect
+        return "redirect:/lista-cliente"; // importante usar redirect
     }
 }

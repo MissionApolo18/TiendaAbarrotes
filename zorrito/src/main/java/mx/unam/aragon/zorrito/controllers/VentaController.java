@@ -6,6 +6,7 @@ import mx.unam.aragon.zorrito.dto.VentaDto;
 import mx.unam.aragon.zorrito.modelo.*;
 
 import mx.unam.aragon.zorrito.service.Cliente.ClienteService;
+import mx.unam.aragon.zorrito.service.Correo.EmailService;
 import mx.unam.aragon.zorrito.service.CorteInventario.CorteInventarioService;
 import mx.unam.aragon.zorrito.service.DetalleVenta.DetalleVentaService;
 import mx.unam.aragon.zorrito.service.MetodoPago.MetodoPagoService;
@@ -55,6 +56,9 @@ public class VentaController {
     private UsuariosService usuariosService;
     @Autowired
     private CorteInventarioService corteInventarioService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/agregar_venta")
     public String mostrarFormularioVenta(Model model) {
@@ -135,6 +139,33 @@ public class VentaController {
         pago.setIdMethod(metodoPagoService.findById(ventaDto.getIdMetodoPago()));
         pago.setTotalPagado(ventaDto.getTotal());
         pagoService.save(pago);
+
+        // correos
+        try {
+            List<ItemVentaDto> items = detalleVentaService.obtenerItemsDeVenta(ventaGuardada.getIdVenta());
+            String clienteNombre = cliente.getNombreCliente();
+            String metodoPago = pagoService.findByIdVenta(ventaGuardada.getIdVenta()).getIdMethod().getDescripcion();
+            double total = pagoService.findByIdVenta(ventaGuardada.getIdVenta()).getTotalPagado();
+
+            // Generar PDF en memoria
+            ByteArrayInputStream pdfStream = VentaPdfGenerator.generarPdf(ventaGuardada, items, clienteNombre, metodoPago, total);
+            byte[] pdfBytes = pdfStream.readAllBytes();
+
+            // Enviar correo al cliente
+            emailService.enviarCorreoConAdjunto(
+                    cliente.getCorreoCliente(), // Asegúrate de que este campo existe y tiene correo válido
+                    "Gracias por tu compra en Zorro Abarrotero",
+                    "<p>Hola <b>" + clienteNombre + "</b>, gracias por tu compra.<br>Adjunto encontrarás tu ticket.</p>",
+                    pdfBytes,
+                    "ticket_venta.pdf"
+            );
+        } catch (Exception e) {
+            e.printStackTrace(); // Puedes cambiarlo por logger si lo deseas
+        }
+
+
+
+
 
         // Mensaje para mostrar en la vista
         redirectAttributes.addFlashAttribute("mensaje", "✅ Venta registrada exitosamente.");
