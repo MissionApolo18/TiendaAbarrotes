@@ -104,23 +104,6 @@
         background-color: #9b1d11;
     }
 
-
-    /* Cards */
-    .card, .filaa:hover {
-        background-color: #9b1d11;
-        color: #fbe7d9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-title {
-        color: #FFD700;
-    }
-
-    .card img {
-        border-radius: 10px;
-    }
-
     ul {
         list-style-type: none;
         padding: 0;
@@ -160,26 +143,60 @@
 
     /* Table */
     table {
-        color: #fbe7d9;
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
+        border-collapse: separate;
+        border-spacing: 0;
+        box-shadow:
+                0 8px 24px rgba(255, 69, 0, 0.4),
+                0 0 12px rgba(255, 165, 0, 0.6);
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #fff0e6;
+    }
+    thead tr {
+        background: linear-gradient(90deg, #ff3d00, #ff6e40);
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 1.2px;
+    }
+    thead th {
+        padding: 16px 20px;
     }
 
-    thead.table-dark {
-        background-color: #721009;
+    tbody tr {
+        border-bottom: 1px solid #ffccbc;
+        transition: background-color 0.3s ease;
+        cursor: default;
+    }
+    tbody tr:hover {
+        background-color: #ffccbc;
+    }
+    tbody td {
+        padding: 14px 20px;
+        color: #bf360c;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #fff3e0;
+    }
+    tbody tr:hover td {
+        color: #d84315;
+        font-weight: 700;
     }
 
-    .column, .filaa {
-        background-color: #ec330a;
-        color: #fbe7d9;
-        border: none;
-        border-radius: 5px;
+    caption {
+        caption-side: top;
+        text-align: center;
+        padding: 14px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        margin-bottom: 12px;
     }
-    .filaa:hover, .column:hover {
-        background-color: #9b1d11;
-        color: #fbe7d9;
-    }
+
     /*Bottons Table*/
     .btn-success {
         background-color: #28a745 !important;
@@ -192,5 +209,14 @@
         border-color: #1e7e34 !important;
     }
 
+    .btn-info {
+        background-color: #1d6a04 !important;
+        border-color: #1d6a04 !important;
+        color: #fbe7d9 !important;
+    }
 
+    .btn-info:hover {
+        background-color: #174703 !important;
+        border-color: #174703 !important;
+    }
 </style>

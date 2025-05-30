@@ -5,9 +5,12 @@
 <div th:fragment="navegacion-seccion" th:remove="tag">
     <!--Div para la barra de navegacion-->
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-xl navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/index">Punto de Venta</a>
+                <a class="navbar-brand" href="/index">
+                    <img th:src="@{/img/zorro.jpg}" alt="Zorro Abarrotero"  width="30" height="30">
+                    Punto de Venta
+                </a>
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
@@ -17,15 +20,15 @@
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                <div class="collapse navbar-collapse nav-fill" id="navbarNav">
+                    <ul class="navbar-nav nav-fill me-auto ">
 
-                        <li class="nav-item">
+                        <li class="nav-item nav-fill">
                             <a class="nav-link active" aria-current="page" href="/index">Inicio</a>
                         </li>
 
                         <!-- Dropdown de productos -->
-                        <li class="nav-item dropdown">
+                        <li class="nav-item nav-fill dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Productos
                             </a>
@@ -36,7 +39,7 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item nav-fill dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="ventasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Ventas
                             </a>
@@ -46,7 +49,7 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                        <li class="nav-item nav-fill dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Clientes
                             </a>
@@ -56,17 +59,23 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                        <li class="nav-item nav-fill dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="distribuidorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Proovedores
+                                Proveedores
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="clientesDropdown">
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Proovedores</a></li>
-                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Proovedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/listar_distribuidor}">Listar Proveedores</a></li>
+                                <li><a class="dropdown-item" th:href="@{/distribuidor/agregar_distribuidor}">Agregar Proveedores</a></li>
+                                <div class="dropdown-divider"></div>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/pedido/historial}">Historial Pedidos</a>
+                                    <a class="dropdown-item" th:href="@{/pedido/nuevo_pedido}">Realizar Pedido</a>
+                                </li>
+                                <!-- Hasta aquí-->
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                        <li class="nav-item nav-fill dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="usuariosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Usuarios
                             </a>
@@ -75,17 +84,6 @@
                                 <li><a class="dropdown-item" th:href="@{/usuario/agregar_usuario}">Agregar Usuarios</a></li>
                             </ul>
                         </li>
-
-                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                            <a class="nav-link dropdown-toggle" href="#" id="pedidosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pedidos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="pedidosDropdown">
-                                <li><a class="dropdown-item" th:href="@{/pedido/historial}">Historial Pedidos</a></li>
-                                <li><a class="dropdown-item" th:href="@{/pedido/nuevo_pedido}">Realizar Pedido</a></li>
-                            </ul>
-                        </li>
-
 
                     </ul>
 
@@ -112,20 +110,28 @@
     .navbar {
         background-color: #BD280CFF !important;
         border-radius: 10px;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .navbar-brand,
     .nav-link {
         color: #fbe7d9 !important;
         transition: color 0.3s ease;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .nav-link.active {
         border-bottom: 2px solid #FFD700;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .nav-link:hover {
         color: #FFD700 !important;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .dropdown-menu {

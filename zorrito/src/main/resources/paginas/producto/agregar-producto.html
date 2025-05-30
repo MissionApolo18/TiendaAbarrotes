@@ -67,26 +67,26 @@
                   id="distribuidor"
                   th:classappend="${#fields.hasErrors('distribuidor')} ? 'is-invalid'">
             <option th:value="${producto.distribuidor}"
-                    th:selected="${distribuidor == null}">Seleccione un proovedor</option>
+                    th:selected="${distribuidor == null}">Seleccione un proveedor</option>
             <option th:each="d : ${distribuidores}"
                     th:value="${d.id_distribuidor}"
                     th:text="${d.nombreDistribuidor}">
             </option>
           </select>
-          <label for="distribuidor">Proovedor</label>
+          <label for="distribuidor">Proveedor</label>
         </div>
 
 
         <!-- URL de la imagen -->
-<!--        <div class="form-floating mb-3">-->
-<!--          <input-->
-<!--                  th:classappend="${#fields.hasErrors('imagenProducto')}? 'is-invalid'"-->
-<!--                  type="text"-->
-<!--                  th:field="*{imagenProducto}"-->
-<!--                  class="form-control"-->
-<!--                  placeholder="URL de la imagen">-->
-<!--          <label for="imagenProducto">Imagen URL</label>-->
-<!--        </div>-->
+        <!--        <div class="form-floating mb-3">-->
+        <!--          <input-->
+        <!--                  th:classappend="${#fields.hasErrors('imagenProducto')}? 'is-invalid'"-->
+        <!--                  type="text"-->
+        <!--                  th:field="*{imagenProducto}"-->
+        <!--                  class="form-control"-->
+        <!--                  placeholder="URL de la imagen">-->
+        <!--          <label for="imagenProducto">Imagen URL</label>-->
+        <!--        </div>-->
 
       </div>
     </div>
@@ -232,6 +232,42 @@
 
   header a:hover {
     text-decoration: underline;
+  }
+
+  /*Label, Inputs y Otros*/
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+    border-radius: 9999px;
+  }
+
+  input {
+    padding: 0.9rem 1rem;
+    border: none;
+    border-radius: 9999px; /* hace el input completamente redondeado */
+    background-color: #f1f1f1;
+    font-size: 0.95rem;
+    box-shadow: inset 0 0 3px rgb(51, 51, 51);
+    transition: box-shadow 0.3s ease;
+    outline: none;
+    width: 100%;
+  }
+  input:focus{
+    box-shadow: 0 0 0 3px rgb(114, 16, 9);
+  }
+
+  select {
+    padding: 0.9rem 1rem;
+    border: none;
+    border-radius: 9999px; /* hace el input completamente redondeado */
+    background-color: #f1f1f1;
+    font-size: 0.95rem;
+    box-shadow: inset 0 0 3px rgb(51, 51, 51);
+    transition: box-shadow 0.3s ease;
+    outline: none;
+    width: 100%;
   }
 
 </style>
